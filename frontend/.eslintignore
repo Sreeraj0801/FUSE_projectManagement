@@ -1,0 +1,9 @@
+# ignore built files
+build/
+dist/
+out/
+node_modules/
+
+# ignore all files in the public folder except index.html
+public/**/*
+!public/index.html

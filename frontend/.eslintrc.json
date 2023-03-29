@@ -1,0 +1,20 @@
+{    
+    "env": {
+        "browser": true,
+        "es6": true
+      },
+    "extends": ["eslint:recommended", "plugin:react/recommended", "plugin:react-hooks/recommended", "plugin:jsx-a11y/recommended"],
+    "rules": {
+      // add custom rules here
+    },
+    "parserOptions": {
+        "ecmaVersion": 2021,
+        "sourceType": "module"
+      },
+      "settings": {
+        "react": {
+          "version": "detect"
+        }
+      }
+  }
+  
