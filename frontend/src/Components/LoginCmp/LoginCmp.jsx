@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import axiosInstance from "../../API/baseURL";
 import { BsGoogle } from "react-icons/bs";
 import { FaPhoneAlt } from "react-icons/fa";
@@ -9,10 +9,12 @@ import Logo from "../../assets/Logo";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setDetails } from "../../Redux/Slice/userSlice";
-import userAuth from '../../Firebase/userAuth'
+import userAuth from '../../Firebase/userAuth';
+import LoaderCmp from "../Loader/Loader";
 
 
 function LoginCmp() {
+  const [loader ,setLoader] = useState(false);
   const {googleSignIn} = userAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -25,14 +27,15 @@ function LoginCmp() {
     checkSubmit(e);
     if (!isValid) toast.warning("Please check the credential");
     if (isValid) {
+      setLoader(true)
       await axiosInstance
-        .post("/login", details, { withcredential: true })
+        .post("/login", details)
         .then((response) => {
           if (response.data && response.status === 200) {
-            const { email, name, mobile ,pword } =
+            const { email, name, _id } =
               response.data.response;
-              console.log(response.data.response);
-            dispatch(setDetails({ name, email, mobile,pword }));
+            dispatch(setDetails({ name, email,userId:_id,accessToken:response.data.accessToken}));
+            setLoader(false)
             navigate("/home");
           }
         })
@@ -136,7 +139,8 @@ function LoginCmp() {
           </div>
           <div className="text-center mt-4 -mb-5">
             <button className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-500 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200">
-              <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0 text-sm text-bold w-32">
+              <span className=" flex relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0 text-sm text-bold w-32">
+                {loader?<LoaderCmp />:""}               
                 LOGIN
               </span>
             </button>

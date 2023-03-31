@@ -4,7 +4,7 @@ export class JWTauth {
 
    async generateAccessToken(userId:string){
         try {
-           return  await  sign({userId },process.env.JWT_ACCESS_TOKEN_SECRET as string ,{expiresIn:'15m'})
+           return  await  sign({userId },process.env.JWT_ACCESS_TOKEN_SECRET as string ,{expiresIn:'20s'})
         } catch (error) {
             console.log(error);
             
@@ -23,7 +23,7 @@ export class JWTauth {
     
     async createVerifyToken (userId:string){
         try {
-            return await sign({userId},process.env.VERIFY_MAIL_TOKEN_SECRET as string ,{expiresIn:'2m'})
+            return await sign({userId},process.env.VERIFY_MAIL_TOKEN_SECRET as string ,{expiresIn:'5m'})
         } catch (error) {
             console.log(error);
             throw {error};
@@ -35,6 +35,14 @@ export class JWTauth {
             return await verify(token, process.env.VERIFY_MAIL_TOKEN_SECRET as string)
         } catch (error) {
           throw{error}  
+        }
+    }
+
+    async verifyRefreshToken(token:string){
+        try {
+           return await verify(token,process.env.JWT_REFRESH_TOKEN_SECRET as string);
+        } catch (error) {
+            throw {error}
         }
     }
 

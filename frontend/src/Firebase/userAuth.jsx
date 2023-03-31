@@ -39,11 +39,8 @@ const userAuth = () => {
         //
         const response = await axiosInstance.post('/googleSignIn',{email:data.user.email});        
         if(response?.data?.response){
-          const {email,displayName,fname,lname} = response.data.response ;
-          let name = ''
-          if(displayName){name = displayName}
-          else{name = fname+" "+lname} 
-            dispatch(setDetails({name,email}));
+          const {email,name,_id} = response.data.response ;   
+            dispatch(setDetails({name,email,accessToken:response?.data?.accessToken,userId:_id}));
             navigate('/home')
         }
       } catch (error) {

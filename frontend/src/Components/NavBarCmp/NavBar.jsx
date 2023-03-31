@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { BsSunFill, BsFillMoonFill } from "react-icons/bs";
 import { useEffect } from "react";
-import Logo from '../../assets/MainLogo'
+import Logo from "../../assets/MainLogo";
 function Navbar() {
   const [dark, setDark] = useState(true);
 
@@ -19,14 +19,14 @@ function Navbar() {
       <nav className=" bg-white px-2 sm:px-4 py-2.5 dark:bg-gray-900  w-full z-20 top-0 left-0  border-gray-200 dark:border-gray-600">
         <div className="container flex flex-wrap items-center justify-between mx-auto">
           <Link className="flex items-center">
-            <Logo/>
+            <Logo />
           </Link>
           <div className="flex md:order-2 gap-4">
             <div className="bg-gray-700 rounded-lg mt-0.5 hover:cursor-pointer h-9 w-9 flex justify-center items-center">
               {dark ? (
                 <BsSunFill
                   onClick={() => setDark(!dark)}
-                  className="text-white"
+                  className="text-white "
                 />
               ) : (
                 <BsFillMoonFill
@@ -96,9 +96,9 @@ function Navbar() {
                 </Link>
               </li>
               <li>
-                <linLink className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
+                <Link className="block py-2 pl-3 pr-4 text-gray-700 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-white dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">
                   Contact
-                </linLink>
+                </Link>
               </li>
             </ul>
           </div>

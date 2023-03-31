@@ -1,33 +1,46 @@
-import { userInterface, loginInterface ,veriyCredentialsInterface ,googleUserInterface} from "../Types/Auth.types";
+import {
+  userInterface,
+  loginInterface,
+  veriyCredentialsInterface,
+  googleUserInterface,
+} from "../Types/Auth.types";
 import bcrypt from "bcrypt";
-import {JWTauth } from '../Auth/JWT.auth'
+import { JWTauth } from "../Auth/JWT.auth";
 import { UserService } from "../Repostitory/UserService";
 import { sentMail } from "../Verification/Email/nodemailer";
 //------------------------------- @ Importing the instance ------------------------
 const userService = new UserService();
-const { insertUser, findUserByMobileOrEmail,findUserById,updateUserIsValidate,insertGoogleUser } = userService;
+const {
+  insertUser,
+  findUserByMobileOrEmail,
+  findUserById,
+  updateUserIsValidate,
+  insertGoogleUser,
+} = userService;
 
 // @ importing instance
-const newJWTauth = new JWTauth ();
-const {createVerifyToken ,verifyEmailToken} = newJWTauth ;
-
-
-
+const newJWTauth = new JWTauth();
+const { createVerifyToken, verifyEmailToken } = newJWTauth;
 
 export class authHelper {
   //--------------------------- Register a user -------------------------------------
   async doSignUp(details: userInterface) {
     try {
-      const response = await findUserByMobileOrEmail(details.email);
-      if(response && !response?.isVerified){
-        return response
-      }
-      else if(response && response?.isVerified){
-        throw new Error("User Already Exist");
-      }
-      else if (details.pword && details.email && details.name ) {
-        details.pword = await bcrypt.hash(details.pword, 10);
-        return await insertUser(details);
+      // checks for depended details
+      if (details.pword && details.email && details.name) {
+        const response = await findUserByMobileOrEmail(details.email);
+        if (!response) {
+          details.pword = await bcrypt.hash(details.pword, 10);
+          const data = await insertUser(details);
+          return {
+            email: data.email,
+            _id: data._id,
+            name: data.name,
+          };
+        } else {
+          if (!response?.isVerified) return response;
+          else throw new Error("User Already Exist");
+        }
       } else {
         throw new Error("Require every field");
       }
@@ -50,10 +63,17 @@ export class authHelper {
         const response = await findUserByMobileOrEmail(details.credential);
         if (response && response.pword) {
           const auth = await bcrypt.compare(details.pword, response.pword);
-          if(!response?.isVerified) throw new Error("Please verify your email Id")
-          if (auth && response.isVerified){ return response}
-          else { throw new Error("Incorrect password")}
-          
+          if (!response?.isVerified)
+            throw new Error("Please verify your email Id");
+          if (auth && response.isVerified) {
+            return {
+              email: response.email,
+              _id: response._id,
+              name: response.name,
+            };
+          } else {
+            throw new Error("Incorrect password");
+          }
         }
         throw new Error(" User not found ");
       } else throw new Error("Every field is required");
@@ -64,89 +84,89 @@ export class authHelper {
     }
   }
   //---------------  Generate URL ------------------------------------------------
-  async generateLink(userId:string ) {
+  async generateLink(userId: string) {
     try {
       const verifyToken = await createVerifyToken(userId);
-      return  `${process.env.BASE_URL}/verifyUser/${verifyToken}/${userId}`
+      return `${process.env.BASE_URL}/verifyUser/${verifyToken}/${userId}`;
     } catch (error) {
-    console.log(error)
-    throw {error}
+      console.log(error);
+      throw { error };
     }
   }
 
-  
-  async sendVerifyMail (email:string,link:any){
+  async sendVerifyMail(email: string, link: any) {
     try {
-    return sentMail( email,link) ; 
+      return sentMail(email, link);
     } catch (error) {
-      console.log("Mail error message" , error);
-      throw(error);
+      console.log("Mail error message", error);
+      throw error;
     }
   }
 
-  async verifyEmail(details:veriyCredentialsInterface){
-  try {
-    const {userId, verifyToken} = details ;
-    const userDetails  :any = await findUserById(userId);
-    const tokenDetails :any = await verifyEmailToken (verifyToken);
-    if(tokenDetails.userId === userDetails._id.toString()){
-    await updateUserIsValidate(userId);
-      return {succes:true,userDetails}
+  async verifyEmail(details: veriyCredentialsInterface) {
+    try {
+      const { userId, verifyToken } = details;
+      const userDetails: any = await findUserById(userId);
+      const tokenDetails: any = await verifyEmailToken(verifyToken);
+      if (tokenDetails.userId === userDetails._id.toString()) {
+        await updateUserIsValidate(userId);
+        return { succes: true, userDetails };
+      } else {
+        ("Invalid Link ");
+      }
+    } catch (error) {
+      throw { error };
     }
-    else{
-      "Invalid Link "
-    }
-  } catch (error) {
-    throw {error}
-  }
   }
 
-  async googleUserSignUp(details:googleUserInterface){
+  async googleUserSignUp(details: googleUserInterface) {
     try {
       const response = await findUserByMobileOrEmail(details.email);
-      if(response){throw {msg:"User already Exist"}}
-      return await insertGoogleUser(details)
+      if (response) {
+        throw { msg: "User already Exist" };
+      }
+      return await insertGoogleUser(details);
     } catch (error) {
-      throw {error}
+      throw { error };
     }
   }
 
-  async verifyUserId(userId:string){
+  async verifyUserId(userId: string) {
     try {
       const response = await findUserById(userId);
       return response;
     } catch (error) {
-      throw {msg:"Invalid Link Details"}
+      throw { msg: "Invalid Link Details" };
     }
   }
 
-  async googleLogin(email:string){
+  async googleLogin(email: string) {
     try {
       const response = await findUserByMobileOrEmail(email);
       console.log(response);
-      if(!response){
-        throw {msg:"User not found ! Please Register"}
+      if (!response) {
+        throw { msg: "User not found ! Please Register" };
       }
-      if(!response?.isVerified) {
-        const userId:any = response?._id
+      if (!response?.isVerified) {
+        const userId: any = response?._id;
         await updateUserIsValidate(userId);
         return response;
-      }else if(response?.isVerified){
-        return response
+      } else if (response?.isVerified) {
+        return response;
       }
     } catch (error) {
-      throw {error}
+      throw { error };
     }
   }
 
-  async otpLoginAuth(number:string){
+  async otpLoginAuth(number: string) {
     try {
       const response = await findUserByMobileOrEmail(number);
-      if(!response) throw "User not registerd";
-      if(!response?.isVerified) throw "Please verify your email Id"
-      else if(response?.isVerified) return response
+      if (!response) throw "User not registerd";
+      if (!response?.isVerified) throw "Please verify your email Id";
+      else if (response?.isVerified) return response;
     } catch (error) {
-     throw {error}
+      throw { error };
     }
   }
 }

@@ -1,6 +1,9 @@
 import express from 'express';
 const router = express.Router();
-import {userRegistration,userLogin,verifyLink,userGoogleRegistration ,resendVerifyLInk ,googleSignIn ,otpLogin} from '../../Controller/authController';
+import { verifyAccesToken } from '../../Middlewares/jwtVerification'; 
+
+import {userRegistration,userLogin,verifyLink,userGoogleRegistration
+     ,resendVerifyLInk ,googleSignIn ,otpLogin ,getAccessToken ,testPurpose} from '../../Controller/authController';
 
 //------------------------------ User Registration ---------------
     router.post('/register', userRegistration);
@@ -14,13 +17,18 @@ import {userRegistration,userLogin,verifyLink,userGoogleRegistration ,resendVeri
 //--------------------------- EmailRegistration -------------------
     router.post('/googleRegistration',userGoogleRegistration)
 
-//---------------------------Resend Email Registration-------------------
+//---------------------------Resend Email Registration-------------
     router.post('/resendVerifyLink',resendVerifyLInk)
     
-//---------------------------Resend Email Registration-------------------
+//---------------------------Resend Email Registration--------------
     router.post('/googleSignIn',googleSignIn)
 
-    //--------------------------- OTP login ----------------------------
-router.post('/otpLogin',otpLogin)
-    
+//--------------------------- OTP login ----------------------------
+    router.post('/otpLogin',otpLogin)
+
+//---------------------------Resend AccessToken---------------------
+    router.get('/token',getAccessToken)
+
+
+router.get('/testCase',verifyAccesToken,testPurpose)
 export default router;

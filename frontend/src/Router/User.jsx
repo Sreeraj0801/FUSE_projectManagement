@@ -7,6 +7,7 @@ import LoginPage from "../Pages/Users/LoginPage";
 import HomePage from "../Pages/Users/HomePage";
 import EmailVerificationPgae from "../Pages/Users/EmailVerificationPage";
 import OTPloginPage from "../Pages/Users/OTPloginPage";
+import Test from "../Components/TestCmp/Test"
 
 function User() {
   return (
@@ -22,6 +23,7 @@ function User() {
           element={<EmailVerificationPgae />}
         />
         <Route exact path="/otpLogin" element={<OTPloginPage />} />
+        <Route exact path = "/test" element={<Test/>} />
         <Route exact path="*" element={<>404 page not found</>} />
       </Routes>
     </div>
