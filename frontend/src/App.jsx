@@ -1,6 +1,7 @@
 import React from 'react';
-import UserRouter from './Router/User';
 import { BrowserRouter } from 'react-router-dom';
+import UserRouter from './Router/User';
+import ProjectRouter from './Router/Project';
 import 'react-toastify/dist/ReactToastify.css';
 import 'sweetalert2/src/sweetalert2.scss'
 
@@ -8,9 +9,11 @@ import 'sweetalert2/src/sweetalert2.scss'
 function App() {
   return (
     <div>
-        <BrowserRouter>
+      <BrowserRouter>
           <UserRouter/>
-        </BrowserRouter>
+          <ProjectRouter/>
+      </BrowserRouter>
+
     </div>
   );
 }

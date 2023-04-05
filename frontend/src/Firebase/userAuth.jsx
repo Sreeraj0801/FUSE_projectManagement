@@ -26,7 +26,7 @@ const userAuth = () => {
             navigate('/home')
       }
     } catch (error) {
-      if((error.response.data.error.msg)){
+      if((error.response?.data?.error?.msg)){
         toast.error((error.response.data.error.msg))
       }
       else{console.log(error)}

@@ -1,9 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const MobileNav = () => {
+function MobileNav() {
   return (
     <div>
-      <div className="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white  border border-gray-200 rounded bottom-0 left-1/2 dark:bg-gray-700 dark:border-gray-600">
+      <div className="fixed  z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded bottom-0 left-1/2 dark:bg-gray-700 dark:border-gray-600">
         <div className="grid h-full max-w-lg grid-cols-5 mx-auto">
           <button
             data-tooltip-target="tooltip-home"
@@ -58,7 +59,7 @@ const MobileNav = () => {
             Wallet
             <div className="tooltip-arrow" data-popper-arrow></div>
           </div>
-          <div className="flex items-center justify-center">
+          <Link to={'/project/create'} className="flex items-center justify-center">
             <button
               data-tooltip-target="tooltip-new"
               type="button"
@@ -79,7 +80,7 @@ const MobileNav = () => {
               </svg>
               <span className="sr-only">New item</span>
             </button>
-          </div>
+          </Link>
           <div
             id="tooltip-new"
             role="tooltip"
@@ -144,6 +145,6 @@ const MobileNav = () => {
       </div>
     </div>
   );
-};
+}
 
 export default MobileNav;

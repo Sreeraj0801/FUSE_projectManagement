@@ -16,15 +16,15 @@ function User() {
         <Route exact path="/" element={<LandingPage />} />
         <Route exact path="/signup" element={<RegisterPage />} />
         <Route exact path="/login" element={<LoginPage />} />
-        <Route exact path="/home" element={<HomePage />} />
         <Route
           exact
           path="/verifyUser/:verifyToken/:userId"
           element={<EmailVerificationPgae />}
         />
         <Route exact path="/otpLogin" element={<OTPloginPage />} />
+        <Route exact path="/home" element={<HomePage />} />
+        
         <Route exact path = "/test" element={<Test/>} />
-        <Route exact path="*" element={<>404 page not found</>} />
       </Routes>
     </div>
   );

@@ -40,21 +40,46 @@ const useSignupValidation = ()=>{
         let error;
         const {name, value} = e.target
         
-        if(!value.trim()){
-            error = `${name} is required`
-        }
-        if(name === 'name'){
-            if(containSpecialCharacters(value)) error = "No special characters allowed";
-        }else if(name === 'email'){
-            if(!isValidEmail(value)) error = "Invalid email address"
-        }else if(name === 'mobile'){
-            if(!isValidMobile(value)) error = "Invalid mobile number"
-        }else if(name === 'pword'){
-            ClipboardEvent
-            if(!passLength(value)) error = "Should contain atlest 6 character"
-        }else if(name === 'confirmPword'){
-            if(signupFormData.pword !== value) error = "Password does not match"
-        }
+        switch(name) {
+            case 'name':
+              if(!value.trim()) {
+                error = `${name} is required`;
+              } else if(containSpecialCharacters(value)) {
+                error = "No special characters allowed";
+              }
+              break;
+            case 'email':
+              if(!value.trim()) {
+                error = `${name} is required`;
+              } else if(!isValidEmail(value)) {
+                error = "Invalid email address";
+              }
+              break;
+            case 'mobile':
+              if(!value.trim()) {
+                error = `${name} is required`;
+              } else if(!isValidMobile(value)) {
+                error = "Invalid mobile number";
+              }
+              break;
+            case 'pword':
+              if(!value.trim()) {
+                error = `${name} is required`;
+              } else if(!passLength(value)) {
+                error = "Should contain at least 6 characters";
+              }
+              break;
+            case 'confirmPword':
+              if(!value.trim()) {
+                error = `${name} is required`;
+              } else if(signupFormData.pword !== value) {
+                error = "Password does not match";
+              }
+              break;
+            default:
+              error = `${name} is not a valid field`;
+          }
+          
 
         setErrors((prevErrors) => ({
             ...prevErrors,
