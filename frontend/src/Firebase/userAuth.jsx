@@ -20,10 +20,9 @@ const userAuth = () => {
       const userDetails = {displayName: data.user.displayName , email : data.user.email}
       const response =  await axiosInstance.post('/googleRegistration',userDetails);
       if(response.data) {
-          const {email,displayName} = response.data ;
-          const name = displayName ;
-            dispatch(setDetails({name,email}));
-            navigate('/home')
+          const {email,name,_id} = response.data ;
+          dispatch(setDetails({name,email,accessToken:response?.data?.accessToken,userId:_id}));
+          navigate('/home')
       }
     } catch (error) {
       if((error.response?.data?.error?.msg)){

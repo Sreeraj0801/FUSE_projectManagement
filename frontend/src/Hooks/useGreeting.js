@@ -7,7 +7,6 @@ export default  function useGreeting() {
 
   useEffect(() => {
     const intervalId = setInterval(() => setDate(new Date()), 1000);
-
     return () => clearInterval(intervalId);
   }, []);
 

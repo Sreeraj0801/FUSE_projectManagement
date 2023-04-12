@@ -2,6 +2,7 @@
 import React,{ useState } from 'react';
 import TagsInput from 'react-tagsinput';
 import 'react-tagsinput/react-tagsinput.css';
+import { toast ,ToastContainer} from 'react-toastify';
 
 const EmailInput = ({ onSubmit }) => {
   const [tags, setTags] = useState([]);
@@ -11,7 +12,14 @@ const EmailInput = ({ onSubmit }) => {
   };
 
   const handleSubmit = () => {
-    onSubmit(tags);
+      if(validate && tags.length){
+        onSubmit(tags);
+      }else{
+        toast.error("Please make a valid email");
+      }
+    
+
+    
   };
 
   const isEmail = (email) => {
@@ -23,10 +31,10 @@ const EmailInput = ({ onSubmit }) => {
   };
 
   const renderTag = ({ tag, key, disabled, onRemove }) => (
-    <div key={key} className={`bg-${disabled ? 'gray-400' : 'blue-500 '} text-white rounded-lg py-1 px-2 mt-2 mr-2 inline-flex items-center`}>
+    <div key={key} className={`bg-${disabled ? 'gray-400' : 'blue-500 '} text-white rounded-lg py-1 px-2 mt-2 mr-2 inline-flex items-center `}>
       <span className=''>{tag}</span>
       {!disabled && (
-        <button type="button" className="ml-2 text-sm font-medium text-red-500 focus:outline-none" onClick={() => onRemove(key)}>
+        <button type="button" className="ml-2 text-sm font-extrabold focus:outline-none" onClick={() => onRemove(key)}>
           &times;
         </button>
       )}
@@ -49,14 +57,17 @@ const EmailInput = ({ onSubmit }) => {
       {!validate(tags) && (
         <span className="text-red-500 text-sm">Please enter a valid email address.</span>
       )}
-      <button
+<div className='text-end'>
+<button
         type="button"
-        className="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+        className="bg-blue-500 text-white font-bold py-2 px-4 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 w-fit focus:ring-blue-500 focus:ring-opacity-50"
         onClick={handleSubmit}
         disabled={!validate(tags)}
       >
-        Submit
+        Invite  Members
       </button>
+</div>
+<ToastContainer/>
     </div>
   );
 };

@@ -1,31 +1,116 @@
-import React from "react";
+import React, { lazy, Suspense } from "react";
 import { Routes, Route } from "react-router-dom";
+import ErrorBoundary from "../Components/ErrorBoundries/ErrorBoundries";
+import LogoLoader from "../Components/Loders/LogoLoader";
 
-import LandingPage from "../Pages/Users/LandingPage";
-import RegisterPage from "../Pages/Users/RegisterPage";
-import LoginPage from "../Pages/Users/LoginPage";
-import HomePage from "../Pages/Users/HomePage";
-import EmailVerificationPgae from "../Pages/Users/EmailVerificationPage";
-import OTPloginPage from "../Pages/Users/OTPloginPage";
-import Test from "../Components/TestCmp/Test"
+const LandingPage = lazy(() => import("../Pages/Users/LandingPage"));
+const RegisterPage = lazy(() => import("../Pages/Users/RegisterPage"));
+const LoginPage = lazy(() => import("../Pages/Users/LoginPage"));
+const HomePage = lazy(() => import("../Pages/Users/HomePage"));
+const DashboardPage = lazy(()=>import('../Pages/Users/DashboardPage'))
+const EmailVerificationPgae = lazy(() =>
+  import("../Pages/Users/EmailVerificationPage")
+);
+const OTPloginPage = lazy(() => import("../Pages/Users/OTPloginPage"));
+const Test = lazy(() => import("../Components/TestCmp/Test"));
 
 function User() {
   return (
     <div>
       <Routes>
-        <Route exact path="/" element={<LandingPage />} />
-        <Route exact path="/signup" element={<RegisterPage />} />
-        <Route exact path="/login" element={<LoginPage />} />
+        <Route exact
+          path="/"
+          element={
+            <Suspense fallback={<LogoLoader/>} >
+              <ErrorBoundary>
+                <LandingPage />
+              </ErrorBoundary>
+            </Suspense>
+          }
+        />
+        <Route
+          exact
+          path="/signup"
+          element={
+            <Suspense fallback={<LogoLoader/>}>
+              <ErrorBoundary>
+                  <RegisterPage />
+              </ErrorBoundary>
+            </Suspense>
+          }
+        />
+        <Route
+          exact
+          path="/login"
+          element={
+            <Suspense fallback={<LogoLoader/>}>
+              <ErrorBoundary>
+                <LoginPage />
+              </ErrorBoundary>
+            </Suspense>
+          }
+        />
         <Route
           exact
           path="/verifyUser/:verifyToken/:userId"
-          element={<EmailVerificationPgae />}
+          element={
+            <Suspense fallback={<LogoLoader/>}>
+              <ErrorBoundary>
+                <EmailVerificationPgae />
+              </ErrorBoundary>
+            </Suspense>
+          }
         />
-        <Route exact path="/otpLogin" element={<OTPloginPage />} />
-        <Route exact path="/home" element={<HomePage />} />
-        
-        <Route exact path = "/test" element={<Test/>} />
+        <Route
+          exact
+          path="/otpLogin"
+          element={
+            <Suspense fallback={<LogoLoader/>}>
+              <ErrorBoundary>
+                  <OTPloginPage />
+              </ErrorBoundary>
+            </Suspense>
+          }
+        />
+
+        <Route
+          exact
+          path="/home"
+          element={
+            <Suspense fallback={<LogoLoader/>}>
+              <ErrorBoundary>
+                <HomePage />
+              </ErrorBoundary>
+            </Suspense>
+          }
+        />
+
+        <Route
+          exact
+          path="/dashboard"
+          element={
+            <Suspense fallback={<LogoLoader/>}>
+              <ErrorBoundary>
+                <DashboardPage />
+              </ErrorBoundary>
+            </Suspense>
+          }
+        />
+
+        <Route
+          exact
+          path="/test"
+          element={
+            <Suspense fallback={<LogoLoader/>}>
+              <ErrorBoundary>
+               <Test />
+              </ErrorBoundary>
+            </Suspense>
+          }
+        />
       </Routes>
+
+
     </div>
   );
 }

@@ -1,15 +1,31 @@
-import React from 'react'
-import AsideNavbar from '../../Components/AsideNavbar/AsideNavbar';
-import NavBar from '../../Components/NavBarCmp/NavBar';
-import HomeCmp from '../../Components/HomeCmp/HomeCmp';
+import React,{lazy,Suspense} from 'react'
+import NavBarSkelton from '../../Components/Skelton/NavBarSkelton';
+import AsideSkelton from '../../Components/Skelton/AsideSkelton';
+import BodySkelton from '../../Components/Skelton/BodySkelton';
+
+const AsideNavbar = lazy(()=>import('../../Components/AsideNavbar/AsideNavbar'));
+const NavBar = lazy(()=>import('../../Components/NavBarCmp/NavBar'));
+const HomeCmp = lazy(()=>import('../../Components/HomeCmp/HomeCmp'));
 
 const HomePage = () => {
   return (
     <div className='flex h-screen overflow-hidden'>
-      <AsideNavbar/>
+      {
+        <Suspense fallback={<AsideSkelton/>}>
+          <AsideNavbar/>
+        </Suspense>
+      }
       <div className='w-full'>
-      <NavBar/>
-      <HomeCmp/>
+        {
+          <Suspense fallback={<NavBarSkelton/>}>
+             <NavBar/>
+          </Suspense>
+        }
+        {
+          <Suspense fallback={<BodySkelton/>}>
+              <HomeCmp/>
+           </Suspense>
+        }
       </div>
     </div>
       )

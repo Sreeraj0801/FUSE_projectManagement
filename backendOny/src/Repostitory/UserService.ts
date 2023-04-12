@@ -1,5 +1,6 @@
 import {userInterface,googleUserInterface} from '../Types/Auth.types'
 import {userSchemaRegistration} from "../Model/UserSchema";
+import mongoose from 'mongoose';
 
 export class  UserService {
   // ------------------------------ Insert a new User -----------------
@@ -22,9 +23,10 @@ export class  UserService {
     }
 
     async findUserById(userId:string){
-      try {
+      try {        
         return await userSchemaRegistration.findById(userId)
       } catch (error) {
+        console.log(error);
         throw {error};
       }
     }

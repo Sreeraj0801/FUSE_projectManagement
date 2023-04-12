@@ -18,7 +18,6 @@ const HomeCmp = () => {
       </div>
 
       <div className="dark:bg-slate-900 w-full h-24 rounded mt-5 bg-white">
-
       </div>
     </div>
   );

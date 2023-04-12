@@ -1,14 +1,25 @@
+/* eslint-disable react/prop-types */
 import React, { useState } from "react";
 import { BsClipboardPlus } from "react-icons/bs";
 import { TwitterPicker } from "react-color";
+import { useSelector } from "react-redux";
+import { userReducer } from "../../Redux/Slice/userSlice";
+import workspaceApi from "../../API/workspaceApi";
+import { ToastContainer, toast } from "react-toastify";
+import successAlert from '../SweetAlert/successAlert'
 
-export default function CreateWorkspace() {
+export default function CreateWorkspace(props) {
+const {createWorkspace} = workspaceApi();
+  const [render,setRender] = props.data;
   const [showModal, setShowModal] = useState(false);
-  const [error,setError] = useState('')
+  const [error,setError] = useState('');
+  const userDetails = useSelector(userReducer);
   const [details,setDetails] = useState({
     color:"#fff",
-    workspaceName:''
+    workspaceName:'',
+    masterId:userDetails.userId,
   })
+
 
   const handleColorChange = (newColor) => {
     setDetails({...details,color:newColor.hex});
@@ -17,12 +28,22 @@ export default function CreateWorkspace() {
     setDetails({...details,workspaceName:e.target.value})
   }
 
-  const handleSubmit  = () =>{
+  const handleSubmit  = async () =>{
     if(!details.workspaceName.trim()){
       setError("Provide a name for workspace")
+      return
+    }else{
+      try {
+        await createWorkspace(details);
+        setRender(!render);
+        successAlert(`succesfully created workspace  ${details.workspaceName}`,"workspace Created");
+        setShowModal(false)
+      } catch (error) {
+        toast.error(error)
+      }
     }
+
   }
-  console.log(details);
   return (
     <>
       <button
@@ -31,7 +52,7 @@ export default function CreateWorkspace() {
         onClick={() => setShowModal(true)}
       >
         <BsClipboardPlus className="text-2xl " />
-        <span className="hidden md:block">Create Project</span>
+        <span className="hidden md:block">Create Workspace</span>
       </button>
       {showModal ? (
         <>
@@ -90,6 +111,7 @@ export default function CreateWorkspace() {
               </div>
             </div>
           </div>
+          <ToastContainer />
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
         </>
       ) : null}
