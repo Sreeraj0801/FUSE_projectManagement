@@ -3,7 +3,7 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { MdOutlineDashboard } from "react-icons/md";
 import { RiSettings4Line } from "react-icons/ri";
 import { TbReportAnalytics } from "react-icons/tb";
-import { AiOutlineHome, AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHome, AiOutlineHeart,AiOutlineUser } from "react-icons/ai";
 import { FiMessageSquare, FiFolder, FiShoppingCart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import MobileNav from "../MobileNav/MobileNav";
@@ -12,11 +12,11 @@ const AsideNavbar = () => {
   const menus = [
     { name: "home", link: "/home", icon: AiOutlineHome },
     { name: "dashboard", link: "/dashboard", icon: MdOutlineDashboard },
-    { name: "messages", link: "/", icon: FiMessageSquare },
-    { name: "project", link: "/project", icon: TbReportAnalytics, margin: true },
+    { name: "workspaces", link: "/workspace", icon: TbReportAnalytics},
+    { name: "messages", link: "/", icon: FiMessageSquare , margin: true },
     { name: "File Manager", link: "/", icon: FiFolder },
     { name: "Cart", link: "/", icon: FiShoppingCart },
-    { name: "Saved", link: "/", icon: AiOutlineHeart, margin: true },
+    { name: "User", link: "/profile", icon: AiOutlineUser, margin: true },
     { name: "Setting", link: "/", icon: RiSettings4Line },
   ];
   const [open, setOpen] = useState(true);
@@ -26,8 +26,8 @@ const AsideNavbar = () => {
       <div
       // bg-[#0e0e0e]
         className={` bg-white text-gray-900 dark:bg-gray-900 dark:text-white min-h-screen pt-4 ${
-          open ? "w-64" : "w-16"
-        } duration-300 text-gray-100 px-4`}
+          open ? "w-56" : "w-16"
+        }  duration-300 text-gray-100 px-4`}
       >
         <div className="py-3 flex justify-end">
           <HiMenuAlt3

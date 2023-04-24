@@ -1,31 +1,47 @@
-import express,{Application,NextFunction } from "express";
-import http from 'http';
-import serverConfig from "./frameworks/webserver/server";
-import routes from './frameworks/webserver/routes'
-import expressConfig from "./frameworks/webserver/express";
-import Colors = require("colors.ts")
-import errorHandlingMiddleware from './frameworks/webserver/middlewares/errorHandlingMiddleware'
-import AppError from "./frameworks/webserver/utils/appError";
-import connectDB from "./frameworks/database/mongodb/connection";
-Colors.enable
+import express from "express";
+import cors from "cors";
+import morgan from "morgan";
+import cookieParser from "cookie-parser";
+import bodyParser from "body-parser";
+import { connectToDatabase } from "./Connection/connection";
+import * as dotenv from "dotenv";
+const app = express();
 
+connectToDatabase();
+dotenv.config();
 
-const app:Application = express();
-const server = http.createServer(app);
+//----------------------- middleware ------------------------------
+app.use(
+  cors({
+    origin: "http://127.0.0.1:5173",
+    methods: ["PUT", "POST", "DELETE", "GET", "PATCH"],
+    credentials: true,
+  })
+);
+// app.use(cors());
+app.use(morgan("dev"));
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+app.use(cookieParser());
+app.use(express.static("Public"));
+app.use(express.json());
 
-//connectiong mongoDB
-connectDB()
+/* ------------------------ Routes --------------------------------
+   # importing Routes and Using It
+   ## Import Routes - User
+ */
+import UserRouter from "./Routes/Users/auth";
+import WorkspaceRouter from './Routes/Users/workspace'
+import ProjectRouter from './Routes/Users/project';
+import TaskRouter from './Routes/Users/task'
+//Using the Routes
 
-expressConfig(app);
-//routes for each endPoint
-routes(app)
+app.use("/", UserRouter);
+app.use("/workspace",WorkspaceRouter);
+app.use("/project",ProjectRouter)
+app.use('/task',TaskRouter)
 
-app.use(errorHandlingMiddleware);
-
-app.all('*',(req,res,next:NextFunction)=>{
-    next(new AppError('Not Found ' ,404));
+//--------------------- Port Running -----------------------------
+app.listen(process.env.PORT_NUMBER, () => {
+  console.log(`server started at http://localhost:${process.env.PORT_NUMBER}`);
 });
-
-
-
-serverConfig(server).startServer();

@@ -35,7 +35,6 @@ const userAuth = () => {
   const googleSignIn = async () =>{
     signInWithPopup(auth,provider).then(async(data) => {
       try {
-        //
         const response = await axiosInstance.post('/googleSignIn',{email:data.user.email});        
         if(response?.data?.response){
           const {email,name,_id} = response.data.response ;   

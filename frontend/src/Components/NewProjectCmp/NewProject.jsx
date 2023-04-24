@@ -22,7 +22,7 @@ import SuccessAlert from "../SweetAlert/successAlert";
 
 const NewProject = () => {
   const { getUserWorkspace, getAllWorkspaceMembers } = workspaceApi();
-  const {createProject} = projectApi();
+  const { createProject } = projectApi();
   const navigate = useNavigate();
   const userDetails = useSelector(userReducer);
   const dark = useSelector(themeReducer);
@@ -40,8 +40,8 @@ const NewProject = () => {
     toDate: "",
     members: [],
   });
-  const [loader,setLoader] = useState(false);
-  const [finalLoader,setFinalLoader] = useState(false);
+  const [loader, setLoader] = useState(false);
+  const [finalLoader, setFinalLoader] = useState(false);
 
   //-----------------------------------------------------------------
   useEffect(() => {
@@ -63,12 +63,11 @@ const NewProject = () => {
 
   const getWorkspaceMembers = async (workspaceId) => {
     try {
-      setLoader(true)
+      setLoader(true);
       if (workspaceId) {
         const response = await getAllWorkspaceMembers(workspaceId);
         setWorkspaceMembers(response);
-        console.log(workspaceMembers);
-        setLoader(false)
+        setLoader(false);
       }
     } catch (error) {
       console.log(error);
@@ -86,9 +85,7 @@ const NewProject = () => {
       console.log(error);
       toast.error("Something went wrong at fetching members");
     }
-
   }, [projectDetails.workspaceName]);
-
 
   const handleCheckboxClick = (e) => {
     const email = e.target.value;
@@ -114,12 +111,13 @@ const NewProject = () => {
       setFinalLoader(true);
       const response = await createProject(projectDetails);
       setFinalLoader(false);
-      SuccessAlert(response,"success");
+      SuccessAlert(response, "success");
+      navigate(-1);
     } catch (error) {
       setFinalLoader(false);
       toast.error(error.msg);
     }
-  } 
+  };
 
   return (
     <div className="dark:bg-slate-900 min-h-screen  dark:text-white text-slate-900 md:px-8 p-5 w-full h-max-screen">
@@ -298,16 +296,14 @@ const NewProject = () => {
                 </div>
               </ErrorBoundary>
             }
-  {/*Project -------------------------------------------------------------------------------------------------------------------------------------------------------*/}
+            {/*Project -------------------------------------------------------------------------------------------------------------------------------------------------------*/}
 
             {/* its the content of add project */}
             {
               <ErrorBoundary>
                 <div
                   className={`p-4 bg-white  rounded-lg md:p-8 dark:bg-gray-800  h-2/3 overflow-scroll ${
-                    toggleName === "project"
-                      ? "block "
-                      : "hidden"
+                    toggleName === "project" ? "block " : "hidden"
                   }`}
                   id="about"
                   role="tabpanel"
@@ -458,7 +454,7 @@ const NewProject = () => {
                 </div>
               </ErrorBoundary>
             }
-  {/*Enlist -------------------------------------------------------------------------------------------------------------------------------------------------------*/}
+            {/*Enlist -------------------------------------------------------------------------------------------------------------------------------------------------------*/}
             {
               <ErrorBoundary>
                 <div
@@ -516,56 +512,82 @@ const NewProject = () => {
                           />
                         </div>
                       </div>
-                      <div className="flex justify-end m-2 text-2xl font-extrabold  cursor-pointe " 
-                       onClick={()=>{
-                       getWorkspaceMembers(projectDetails.workspaceName)}}
-                        >
-                          <div className="flex bg-slate-900 p-1 rounded-full gap-2 cursor-pointer hover:bg-black hover:scale-110">
-                          <span className="hidden md:block text-xl">Refresh</span>
-                        <RxUpdate className="mt-1 "/>
-                          </div>
+                      <div
+                        className="flex justify-end m-2 text-2xl font-extrabold  cursor-pointe "
+                        onClick={() => {
+                          getWorkspaceMembers(projectDetails.workspaceName);
+                        }}
+                      >
+                        <div className="flex bg-slate-900 p-1 rounded-full gap-2 cursor-pointer hover:bg-black hover:scale-110">
+                          <span className="hidden md:block text-xl">
+                            Refresh
+                          </span>
+                          <RxUpdate className="mt-1 " />
                         </div>
+                      </div>
                       <ul
                         className="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200 grid  lg:grid-cols-3 gap-2 md:gap-5"
                         aria-labelledby="dropdownSearchButton "
                       >
                         {workspaceMembers.length ? (
-                        loader ?
-                        <div className="bg-transparent flex justify-center items-center h-full col-span-5">
-                          <ThreeCircles/>
-                        </div>
-                        :
-                        workspaceMembers.map((members) => {
-                          return (
-                            <div key={members.email}>
-                              <li>
-                                <input
-                                  type="checkbox"
-                                  id={members.email}
-                                  value={members.email}
-                                  className="hidden peer"
-                                  required=""
-                                  disabled={members.status === 'declined' || members.status === "pending" ? true : false}
-                                  onClick={(e) => members.status==="accepted" &&  handleCheckboxClick(e)}
-                                  />
-                                <label
-                                  htmlFor={members.email}
-                                  className={`  break-all inline-flex items-center justify-between w-full p-3 text-gray-500 bg-gray-200 border-2  cursor-pointer dark:hover:text-gray-200  peer-checked:border-green-600 hover:text-gray-600 dark:peer-checked:text-green-400 peer-checked:text-gray-900 hover:bg-gray-300 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-900 ${members.status==="accepted" ? 'border-gray-300 dark:border-gray-600 ': (members.status === 'declined' ?'border-red-600':'border-red-300 dark:border-red-600 ' )}`}
-                                >
-                                  <div className="flex gap-3">
-
-                                    <div className="w-full md:text-lg font-semibold">
-                                    {members.email}
-                                    <div className={`font-light md:text-sm ${members.status==="accepted" ? 'text-green-400': (members.status === 'declined' ?'text-red-600':'text-yellow-600' )}`}>
-                                      {members.status}
-                                    </div>
-                                    </div>
-                                  </div>
-                                </label>
-                              </li>
+                          loader ? (
+                            <div className="bg-transparent flex justify-center items-center h-full col-span-5">
+                              <ThreeCircles />
                             </div>
-                          );
-                        })
+                          ) : (
+                            workspaceMembers.map((members) => {
+                              return (
+                                <div key={members.email}>
+                                  <li>
+                                    <input
+                                      type="checkbox"
+                                      id={members.email}
+                                      value={members.email}
+                                      className="hidden peer"
+                                      required=""
+                                      disabled={
+                                        members.status === "declined" ||
+                                        members.status === "pending"
+                                          ? true
+                                          : false
+                                      }
+                                      onClick={(e) =>
+                                        members.status === "accepted" &&
+                                        handleCheckboxClick(e)
+                                      }
+                                    />
+                                    <label
+                                      htmlFor={members.email}
+                                      className={`  break-all inline-flex items-center justify-between w-full p-3 text-gray-500 bg-gray-200 border-2  cursor-pointer dark:hover:text-gray-200  peer-checked:border-green-600 hover:text-gray-600 dark:peer-checked:text-green-400 peer-checked:text-gray-900 hover:bg-gray-300 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-900 ${
+                                        members.status === "accepted"
+                                          ? "border-gray-300 dark:border-gray-600 "
+                                          : members.status === "declined"
+                                          ? "border-red-600"
+                                          : "border-red-300 dark:border-red-600 "
+                                      }`}
+                                    >
+                                      <div className="flex gap-3">
+                                        <div className="w-full md:text-lg font-semibold">
+                                          {members.email}
+                                          <div
+                                            className={`font-light md:text-sm ${
+                                              members.status === "accepted"
+                                                ? "text-green-400"
+                                                : members.status === "declined"
+                                                ? "text-red-600"
+                                                : "text-yellow-600"
+                                            }`}
+                                          >
+                                            {members.status}
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </label>
+                                  </li>
+                                </div>
+                              );
+                            })
+                          )
                         ) : (
                           <h1 className=" text-2xl font-extrabold text-center border flex justify-center items-center col-span-4">
                             No members present
@@ -604,7 +626,7 @@ const NewProject = () => {
                       </button>
                     </div>
                   </div>
-                  {finalLoader&& <ModalLoader/>}
+                  {finalLoader && <ModalLoader />}
                 </div>
               </ErrorBoundary>
             }

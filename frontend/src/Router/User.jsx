@@ -7,7 +7,8 @@ const LandingPage = lazy(() => import("../Pages/Users/LandingPage"));
 const RegisterPage = lazy(() => import("../Pages/Users/RegisterPage"));
 const LoginPage = lazy(() => import("../Pages/Users/LoginPage"));
 const HomePage = lazy(() => import("../Pages/Users/HomePage"));
-const DashboardPage = lazy(()=>import('../Pages/Users/DashboardPage'))
+const DashboardPage = lazy(() => import("../Pages/Users/DashboardPage"));
+const UserProfilePage = lazy(()=>import('../Pages/Users/UserProfile'))
 const EmailVerificationPgae = lazy(() =>
   import("../Pages/Users/EmailVerificationPage")
 );
@@ -18,10 +19,11 @@ function User() {
   return (
     <div>
       <Routes>
-        <Route exact
+        <Route
+          exact
           path="/"
           element={
-            <Suspense fallback={<LogoLoader/>} >
+            <Suspense fallback={<LogoLoader />}>
               <ErrorBoundary>
                 <LandingPage />
               </ErrorBoundary>
@@ -32,9 +34,9 @@ function User() {
           exact
           path="/signup"
           element={
-            <Suspense fallback={<LogoLoader/>}>
+            <Suspense fallback={<LogoLoader />}>
               <ErrorBoundary>
-                  <RegisterPage />
+                <RegisterPage />
               </ErrorBoundary>
             </Suspense>
           }
@@ -43,7 +45,7 @@ function User() {
           exact
           path="/login"
           element={
-            <Suspense fallback={<LogoLoader/>}>
+            <Suspense fallback={<LogoLoader />}>
               <ErrorBoundary>
                 <LoginPage />
               </ErrorBoundary>
@@ -54,7 +56,7 @@ function User() {
           exact
           path="/verifyUser/:verifyToken/:userId"
           element={
-            <Suspense fallback={<LogoLoader/>}>
+            <Suspense fallback={<LogoLoader />}>
               <ErrorBoundary>
                 <EmailVerificationPgae />
               </ErrorBoundary>
@@ -65,9 +67,9 @@ function User() {
           exact
           path="/otpLogin"
           element={
-            <Suspense fallback={<LogoLoader/>}>
+            <Suspense fallback={<LogoLoader />}>
               <ErrorBoundary>
-                  <OTPloginPage />
+                <OTPloginPage />
               </ErrorBoundary>
             </Suspense>
           }
@@ -77,7 +79,7 @@ function User() {
           exact
           path="/home"
           element={
-            <Suspense fallback={<LogoLoader/>}>
+            <Suspense fallback={<LogoLoader />}>
               <ErrorBoundary>
                 <HomePage />
               </ErrorBoundary>
@@ -89,7 +91,7 @@ function User() {
           exact
           path="/dashboard"
           element={
-            <Suspense fallback={<LogoLoader/>}>
+            <Suspense fallback={<LogoLoader />}>
               <ErrorBoundary>
                 <DashboardPage />
               </ErrorBoundary>
@@ -99,18 +101,28 @@ function User() {
 
         <Route
           exact
+          path="/profile"
+          element={
+            <Suspense fallback={<LogoLoader />}>
+              <ErrorBoundary>
+                <UserProfilePage />
+              </ErrorBoundary>
+            </Suspense>
+          }
+        />
+
+        <Route
+          exact
           path="/test"
           element={
-            <Suspense fallback={<LogoLoader/>}>
+            <Suspense fallback={<LogoLoader />}>
               <ErrorBoundary>
-               <Test />
+                <Test />
               </ErrorBoundary>
             </Suspense>
           }
         />
       </Routes>
-
-
     </div>
   );
 }

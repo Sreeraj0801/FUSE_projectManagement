@@ -10,7 +10,7 @@ import successAlert from '../SweetAlert/successAlert'
 
 export default function CreateWorkspace(props) {
 const {createWorkspace} = workspaceApi();
-  const [render,setRender] = props.data;
+  const [render,setRender] = props.data || '';
   const [showModal, setShowModal] = useState(false);
   const [error,setError] = useState('');
   const userDetails = useSelector(userReducer);
@@ -73,7 +73,7 @@ const {createWorkspace} = workspaceApi();
                   </button>
                 </div>
                 {/*body*/}
-                <div className="relative p-6 flex-auto">
+                <div className="relative p-6 flex-auto ">
                     <form action='' className="grid gap-6" >
                       <div>
                       <label htmlFor="helper-text" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Workspace Name</label>

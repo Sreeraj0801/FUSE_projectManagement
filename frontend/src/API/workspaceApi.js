@@ -44,13 +44,31 @@ const workspaceApi = () => {
         throw {error}
       }
     }
-
+    const getWorksapceDetails = async (workspaceId) =>{
+      try {
+        const {data} =  await axiosPrivate.get(`/workspace/details/${workspaceId}`) ;
+        return data;
+       }catch (error) {
+         console.log(error);
+         throw {error}
+       }
+    }
+    const fetchMyWorkspaces= async (userId,email) =>{
+      try {
+        const {data} = await axiosPrivate.get(`workspace/myWorkspaces/${userId}/${email}`) ; 
+        return data 
+      } catch (error) {
+        console.log(error)
+      }
+    }
   return {
     createWorkspace,
     getUserWorkspace,
     addUserToWorkspace,
     verifyWorkspaceInvitationMail,
     getAllWorkspaceMembers,
+    getWorksapceDetails,
+    fetchMyWorkspaces
     
   };
 }
