@@ -14,9 +14,9 @@ const projectApi = () => {
         }
       }
 
-      const getAllProjectDetails = async (workspaceId) =>{
+      const getAllProjectDetails = async (workspaceId,email,userId) =>{
         try {
-         const {data} = await axiosPrivate.get(`/project/${workspaceId}`);
+         const {data} = await axiosPrivate.get(`/project/${workspaceId}/${email}/${userId}`);
          return data ;
         } catch (error) {
           throw {error}

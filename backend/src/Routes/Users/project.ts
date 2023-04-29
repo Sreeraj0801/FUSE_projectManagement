@@ -12,7 +12,7 @@ import {
 router.post("/create", createProjectController);
 
 //--------- Get all projejcts -------------------
-router.get("/:workspaceId/", getAllProjectDetails);
+router.get("/:workspaceId/:email/:userId", getAllProjectDetails);
 
 //--------- Get all projejcts -------------------
 router.get("/details/:projectId", getProjectDetail);

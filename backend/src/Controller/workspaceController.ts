@@ -64,10 +64,9 @@ export const inviteMembersController = async (req: Request, res: Response) => {
 export const verifyMemberController = async (req: Request, res: Response) => {
   try {
     const { workspace, choise } = req.params;
-    console.log(workspace,choise)
-    const email = await decryptEmail(req.params.email);
+    const email = await decryptEmail(req.params.email);    
     const response = await verityMemberHelper({ workspace, email, choise });
-    
+
     const accessToken = await generateAccessToken(response._id.toString());
     const refreshToken = await generateRefreshToken(response._id.toString());
     res.cookie("accessToken", accessToken, {

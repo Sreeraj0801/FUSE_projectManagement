@@ -34,6 +34,7 @@ const NewProject = () => {
   const [projectDetails, setProjectDetails] = useState({
     workspaceName: "",
     projectName: "",
+    masterId:userDetails.userId,
     projectDiscription: "",
     projectTheme: "#fff",
     fromDate: "",

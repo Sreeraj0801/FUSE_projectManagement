@@ -7,6 +7,8 @@ export class ProjectServices {
   //-----------create a project
   async createProjectService(details: projectDetailsInterface) {
     try {
+      console.log(details);
+
       const response = await userProjectSchema.create(details);
       await userWorkspaceSchema.findByIdAndUpdate(
         { _id: details.workspaceName },
@@ -37,9 +39,20 @@ export class ProjectServices {
     }
   }
 
-  async getAllProjectDetails(workspaceId: string) {
+  async getAllProjectDetails(
+    workspaceId: string,
+    email: string,
+    userId: string
+  ) {
+    console.log({ userId });
+
     try {
-      return await userProjectSchema.find({ workspaceName: workspaceId });
+      return await userProjectSchema.find({
+        $and: [
+          { workspaceName: workspaceId },
+          { $or: [{ masterId: userId }, { members: email }] },
+        ],
+      });
     } catch (error) {
       console.log("Error from getting Project details", error);
       throw { msg: "something went wrong" };
@@ -80,12 +93,12 @@ export class ProjectServices {
       throw { msg: "Somehting went wrong" };
     }
   }
-  async getMembersDetails(projectId:string){
+  async getMembersDetails(projectId: string) {
     try {
-        return await userProjectSchema.findById({_id:projectId});
+      return await userProjectSchema.findById({ _id: projectId });
     } catch (error) {
-        console.log("Error from getting  registerd project members", error);
-        throw { msg: "Somehting went wrong" };
+      console.log("Error from getting  registerd project members", error);
+      throw { msg: "Somehting went wrong" };
     }
   }
 }

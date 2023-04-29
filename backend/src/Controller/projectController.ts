@@ -20,8 +20,8 @@ export const createProjectController = async (req: Request, res: Response) => {
 
 export const getAllProjectDetails = async (req: Request, res: Response) => {
   try {
-    const { workspaceId } = req.params;
-    const response = await getAllProjectDetailsHelper(workspaceId);
+    const { workspaceId,email,userId } = req.params;
+    const response = await getAllProjectDetailsHelper(workspaceId,email,userId);
     res.status(200).json(response);
   } catch (error) {
     res.status(402).json(error);

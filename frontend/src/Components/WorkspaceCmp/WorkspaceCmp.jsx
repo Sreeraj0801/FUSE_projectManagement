@@ -79,7 +79,7 @@ const ProjectCmp = () => {
       setIcon(category);
       setSelectedWorkspace(wrkSelected[0]);
       setApiLoader(true);
-      const response = await getAllProjectDetails(workspaceId);
+      const response = await getAllProjectDetails(workspaceId,userDetails.email,userDetails.userId);
       setProjects(response);
       setApiLoader(false);
     } catch (error) {
@@ -219,12 +219,9 @@ const ProjectCmp = () => {
         <div className="flex justify-center">
           <div className=" w-full p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700  mt-5 ">
             <div className="flex justify-center items-center">
-              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white items-center">
+              <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white items-center   ease-in-out animate-bounce">
                 SELECT WORKSPACE TO VIEW DETAILS
               </h5>
-            </div>
-            <div className="flex justify-center items-center">
-              <ThreeDots color="orange" />
             </div>
           </div>
         </div>

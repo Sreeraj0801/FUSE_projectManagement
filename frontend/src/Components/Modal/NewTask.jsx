@@ -10,14 +10,16 @@ import projectApi from "../../API/projectApi";
 import { useSelector } from "react-redux";
 import { userReducer } from "../../Redux/Slice/userSlice";
 import taskApi from "../../API/taskApi";
-import ModalLoader from '../Modal/ModalLoader'
-import succesAlert from '../SweetAlert/successAlert' ;
+import ModalLoader from "../Modal/ModalLoader";
+import succesAlert from "../SweetAlert/successAlert";
+import ProgressBar from "../ProgressBar/ProgressBar";
+const NewTask = ({ data }) => {
+  const { projectId, fetchTask } = data;
 
-const NewTask = ({ projectId }) => {
   const userDetails = useSelector(userReducer);
-  const {addTask} = taskApi();
-  const [uploadImages, uploadProgress, downloadURLs] = useImageUpload();
-  const [loader,setLoader] = useState(false);
+  const { addTask } = taskApi();
+  const [uploadImages, uploadProgress] = useImageUpload();
+  const [loader, setLoader] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [images, setImages] = useState([]);
   const [stepper, setStepper] = useState("firstStep");
@@ -28,7 +30,7 @@ const NewTask = ({ projectId }) => {
     discription: "",
     from: "",
     to: "",
-    image: [],
+    images: [],
     assignee: [],
     reporter: userDetails.userId,
     projectId: projectId,
@@ -64,7 +66,7 @@ const NewTask = ({ projectId }) => {
       discription: "",
       from: "",
       to: "",
-      image: [],
+      images: [],
       assignee: [],
       reporter: userDetails.userId,
       projectId: projectId,
@@ -76,7 +78,6 @@ const NewTask = ({ projectId }) => {
     try {
       const response = await getRegisterdProjectMembers(projectId);
       setMembers(response);
-      console.log(members);
     } catch (error) {
       console.log(error);
       toast.error(error?.msg);
@@ -110,29 +111,28 @@ const NewTask = ({ projectId }) => {
     }
   };
 
-
   const handleSubmit = async () => {
-    setLoader(true)
     try {
-        if (images.length) {
-          const imagesArray = Object.values(images);
-          uploadImages(imagesArray)
-            .then(() => {
-              console.log("All images uploaded successfully");
-              setTask({...task,images:downloadURLs})
-            })
-            .catch((error) => {
-              console.log("Error uploading images:", error);
-            })
-          }
-         await addTask(task);
-        setLoader(false);
-        succesAlert("TaskCreated Succesfully","Task");
-      } catch (error) {
-        setLoader(false);
-       toast.error(error); 
+      setLoader(true);
+      if (images.length > 0) {
+        const imagesArray = Object.values(images);
+        const urls = await uploadImages(imagesArray, "taskFiles");
+        setTask((prevState) => {
+          prevState.images = urls;
+        });
       }
+      console.log({ task });
+      await addTask(task);
+      await fetchTask();
+      setLoader(false);
+      handleClose();
+      succesAlert("TaskCreated Succesfully", "Task");
+    } catch (error) {
+      setLoader(false);
+      toast.error(error);
+    }
   };
+
   return (
     <div>
       <>
@@ -371,25 +371,22 @@ const NewTask = ({ projectId }) => {
                   >
                     Close
                   </button>
-                  {console.log(task)}
                   {stepper === "firstStep" && (
                     <button
                       className="bg-emerald-500 text-white rounded-full active:bg-emerald-600 font-bold uppercase text-3xl p-1  shadow hover:shadow-lg outline-none focus:outline-none  ease-linear transition-all duration-150"
                       type="button"
-                      onClick={
-                        () => {
+                      onClick={() => {
+                        if (
+                          task.name &&
+                          task.discription &&
+                          task.from &&
+                          task.to
+                        ) {
                           setStepper("secondStep");
+                        } else {
+                          toast.error("all credentials required");
                         }
-                        //   {
-                        //   task.name &&
-                        //   task.discription &&
-                        //   task.from &&
-                        //   task.to &&
-                        //   task.priority
-                        //     ? setStepper("secondStep")
-                        //     : toast.error("All credentials required");
-                        // }
-                      }
+                      }}
                     >
                       <GrLinkNext />
                     </button>
@@ -439,9 +436,15 @@ const NewTask = ({ projectId }) => {
                     </div>
                   )}
                 </div>
+                {uploadProgress > 0 && (
+                  <ProgressBar
+                    now={uploadProgress}
+                    label={`${uploadProgress.toFixed(0)}%`}
+                  />
+                )}
               </div>
             </div>
-            {loader && <ModalLoader/>}
+            {loader && <ModalLoader />}
           </div>
           <ToastContainer />
           <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>

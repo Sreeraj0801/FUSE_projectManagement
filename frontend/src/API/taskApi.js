@@ -12,8 +12,26 @@ const taskApi = () => {
             throw {error}
         }
     } 
+    const getTask  = async (projectId) => {
+      try {
+        return await axiosPrivate.get(`/task/${projectId}`) ;
+      } catch (error) {
+        console.log("Error while collecting the tasks",error)
+        throw {error}
+      }
+    }
+    const changeStatus = async(userId,taskId,status)=>{
+      try {
+        return await axiosPrivate.patch(`/task/updateStatus`,{userId,taskId,status});
+      } catch (error) {
+        console.log("Error while updating the task status ",error)
+        throw {error}
+      }
+    }
   return {
-    addTask
+    addTask,
+    getTask,
+    changeStatus 
   }
 }
 

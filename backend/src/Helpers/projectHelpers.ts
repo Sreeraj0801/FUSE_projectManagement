@@ -29,9 +29,9 @@ export class ProjectClass {
       throw { error };
     }
   }
-  async getAllProjectDetailsHelper(workspaceId: string) {
+  async getAllProjectDetailsHelper(workspaceId: string,email:string,userId:string) {
     try {
-      return await getAllProjectDetails(workspaceId);
+      return await getAllProjectDetails(workspaceId,email,userId);
     } catch (error) {
       throw { error };
     }
