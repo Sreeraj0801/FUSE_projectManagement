@@ -19,7 +19,7 @@ import { RxUpdate } from "react-icons/rx";
 import { ThreeCircles } from "react-loader-spinner";
 import ModalLoader from "../Modal/ModalLoader";
 import SuccessAlert from "../SweetAlert/successAlert";
-
+const a  = 0 ;
 const NewProject = () => {
   const { getUserWorkspace, getAllWorkspaceMembers } = workspaceApi();
   const { createProject } = projectApi();
