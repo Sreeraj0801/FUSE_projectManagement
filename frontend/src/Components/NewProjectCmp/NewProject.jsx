@@ -1,13 +1,11 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable react-hooks/exhaustive-deps */
+
 
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { themeReducer } from "../../Redux/Slice/themeSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
-import CreateWorkspace from "../Modal/createWorkspace";
+import CreateWorkspace from "../Modal/CreateWorkspace";
 import { CirclePicker } from "react-color";
 import InviteMembersWorkspace from "../Modal/InviteMembersWorkspace";
 import workspaceApi from "../../API/workspaceApi";
@@ -512,7 +510,7 @@ const NewProject = () => {
                           />
                         </div>
                       </div>
-                      <div
+                      <button
                         className="flex justify-end m-2 text-2xl font-extrabold  cursor-pointe "
                         onClick={() => {
                           getWorkspaceMembers(projectDetails.workspaceName);
@@ -524,7 +522,7 @@ const NewProject = () => {
                           </span>
                           <RxUpdate className="mt-1 " />
                         </div>
-                      </div>
+                      </button>
                       <ul
                         className="h-48 px-3 pb-3 overflow-y-auto text-sm text-gray-700 dark:text-gray-200 grid  lg:grid-cols-3 gap-2 md:gap-5"
                         aria-labelledby="dropdownSearchButton "

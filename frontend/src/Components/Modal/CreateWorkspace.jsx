@@ -8,7 +8,7 @@ import workspaceApi from "../../API/workspaceApi";
 import { ToastContainer, toast } from "react-toastify";
 import successAlert from '../SweetAlert/successAlert'
 
-export default function CreateWorkspace(props) {
+function CreateWorkspace(props) {
 const {createWorkspace} = workspaceApi();
   const [render,setRender] = props.data || '';
   const [showModal, setShowModal] = useState(false);
@@ -120,3 +120,5 @@ const {createWorkspace} = workspaceApi();
     </>
   );
 }
+
+export default CreateWorkspace
