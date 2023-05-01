@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { themeReducer } from "../../Redux/Slice/themeSlice";
 import { Link, useNavigate } from "react-router-dom";
 import { BsFillArrowLeftCircleFill } from "react-icons/bs";
-import CreateWorkspace from "../Modal/createWorkspace";
+import CreateWorkspace from "../Modal/CreateWorkspace";
 import { CirclePicker } from "react-color";
 import InviteMembersWorkspace from "../Modal/InviteMembersWorkspace";
 import workspaceApi from "../../API/workspaceApi";
