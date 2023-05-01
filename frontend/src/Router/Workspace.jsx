@@ -3,9 +3,11 @@ import { Routes, Route } from "react-router-dom";
 import ErrorBoundary from '../Components/ErrorBoundries/ErrorBoundries';
 import LogoLoader from "../Components/Loders/LogoLoader";
 import WorkspaceInvitationMain from '../Components/WorkspaceInvitation/WorkspaceInvitationMain';
+
 const WorkspacePage = lazy(()=>import(`../Pages/Users/WorkspacePage`))
 
 const Workspace = () => {
+
   return (
     <div>
       <Routes>
