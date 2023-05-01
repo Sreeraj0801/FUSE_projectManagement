@@ -11,7 +11,7 @@ import InviteMembersWorkspace from "../Modal/InviteMembersWorkspace";
 import { RxUpdate } from "react-icons/rx";
 import { toast, ToastContainer } from "react-toastify";
 import { IoPersonRemove } from "react-icons/io5";
-import CreateWorkspace from "../Modal/createWorkspace";
+import CreateWorkspace from "../Modal/CreateWorkspace";
 import { AiFillCrown, AiOutlineShareAlt } from "react-icons/ai";
 
 const ProjectCmp = () => {
