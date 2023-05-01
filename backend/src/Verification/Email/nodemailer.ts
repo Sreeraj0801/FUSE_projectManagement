@@ -1,7 +1,3 @@
-import nodemailer,{Transporter} from 'nodemailer'
-import {MailOptions} from '../../Types/NodeMailerMail.type'
-
-
 import NodeMailer from 'nodemailer'
 
 export const sentMail = async(email:string,link:string) =>{

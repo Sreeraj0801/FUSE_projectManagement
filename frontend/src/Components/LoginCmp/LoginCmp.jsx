@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setDetails } from "../../Redux/Slice/userSlice";
 import userAuth from '../../Firebase/userAuth';
-import LoaderCmp from "../Loader/Loader";
+import LoaderCmp from "../Loders/Spinner";
 
 
 function LoginCmp() {

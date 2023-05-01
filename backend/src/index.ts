@@ -31,9 +31,15 @@ app.use(express.json());
    ## Import Routes - User
  */
 import UserRouter from "./Routes/Users/auth";
-
+import WorkspaceRouter from './Routes/Users/workspace'
+import ProjectRouter from './Routes/Users/project';
+import TaskRouter from './Routes/Users/task'
 //Using the Routes
+
 app.use("/", UserRouter);
+app.use("/workspace",WorkspaceRouter);
+app.use("/project",ProjectRouter)
+app.use('/task',TaskRouter)
 
 //--------------------- Port Running -----------------------------
 app.listen(process.env.PORT_NUMBER, () => {

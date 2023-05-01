@@ -4,7 +4,7 @@ export class JWTauth {
 
    async generateAccessToken(userId:string){
         try {
-           return  await  sign({userId },process.env.JWT_ACCESS_TOKEN_SECRET as string ,{expiresIn:'20s'})
+           return  await  sign({userId},process.env.JWT_ACCESS_TOKEN_SECRET as string ,{expiresIn:'20s'})
         } catch (error) {
             console.log(error);
             

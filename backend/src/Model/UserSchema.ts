@@ -16,7 +16,6 @@ const userSchema = new mongoose.Schema({
     },
     mobile: {
         type: String,
-        unique: true,
         validate: [
             {
                 validator: function (value: string) {

@@ -20,13 +20,12 @@ const userAuth = () => {
       const userDetails = {displayName: data.user.displayName , email : data.user.email}
       const response =  await axiosInstance.post('/googleRegistration',userDetails);
       if(response.data) {
-          const {email,displayName} = response.data ;
-          const name = displayName ;
-            dispatch(setDetails({name,email}));
-            navigate('/home')
+          const {email,name,_id} = response.data ;
+          dispatch(setDetails({name,email,accessToken:response?.data?.accessToken,userId:_id}));
+          navigate('/home')
       }
     } catch (error) {
-      if((error.response.data.error.msg)){
+      if((error.response?.data?.error?.msg)){
         toast.error((error.response.data.error.msg))
       }
       else{console.log(error)}
@@ -36,7 +35,6 @@ const userAuth = () => {
   const googleSignIn = async () =>{
     signInWithPopup(auth,provider).then(async(data) => {
       try {
-        //
         const response = await axiosInstance.post('/googleSignIn',{email:data.user.email});        
         if(response?.data?.response){
           const {email,name,_id} = response.data.response ;   

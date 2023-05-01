@@ -1,11 +1,12 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
-const MobileNav = () => {
+function MobileNav() {
   return (
     <div>
-      <div className="fixed z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white  border border-gray-200 rounded bottom-0 left-1/2 dark:bg-gray-700 dark:border-gray-600">
+      <div className="fixed  z-50 w-full h-16 max-w-lg -translate-x-1/2 bg-white border border-gray-200 rounded bottom-0 left-1/2 dark:bg-gray-700 dark:border-gray-600">
         <div className="grid h-full max-w-lg grid-cols-5 mx-auto">
-          <button
+          <Link to={'/home'}
             data-tooltip-target="tooltip-home"
             type="button"
             className="inline-flex flex-col items-center justify-center px-5  hover:bg-gray-50 dark:hover:bg-gray-800 group"
@@ -20,7 +21,7 @@ const MobileNav = () => {
               <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path>
             </svg>
             <span className="sr-only">Home</span>
-          </button>
+          </Link>
           <div
             id="tooltip-home"
             role="tooltip"
@@ -29,8 +30,8 @@ const MobileNav = () => {
             Home
             <div className="tooltip-arrow" data-popper-arrow></div>
           </div>
-          <button
-            data-tooltip-target="tooltip-wallet"
+          <Link to={'/workspace'}
+            data-tooltip-target="tooltip-Workspace"
             type="button"
             className="inline-flex flex-col items-center justify-center px-5 hover:bg-gray-50 dark:hover:bg-gray-800 group"
           >
@@ -48,17 +49,17 @@ const MobileNav = () => {
                 d="M18 9H2v5a2 2 0 002 2h12a2 2 0 002-2V9zM4 13a1 1 0 011-1h1a1 1 0 110 2H5a1 1 0 01-1-1zm5-1a1 1 0 100 2h1a1 1 0 100-2H9z"
               ></path>
             </svg>
-            <span className="sr-only">Wallet</span>
-          </button>
+            <span className="sr-only">Workspace</span>
+          </Link>
           <div
-            id="tooltip-wallet"
+            id="tooltip-Workspace"
             role="tooltip"
             className="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700"
           >
-            Wallet
+            Workspace
             <div className="tooltip-arrow" data-popper-arrow></div>
           </div>
-          <div className="flex items-center justify-center">
+          <Link to={'/project/create'} className="flex items-center justify-center">
             <button
               data-tooltip-target="tooltip-new"
               type="button"
@@ -79,7 +80,7 @@ const MobileNav = () => {
               </svg>
               <span className="sr-only">New item</span>
             </button>
-          </div>
+          </Link>
           <div
             id="tooltip-new"
             role="tooltip"
@@ -144,6 +145,6 @@ const MobileNav = () => {
       </div>
     </div>
   );
-};
+}
 
 export default MobileNav;
