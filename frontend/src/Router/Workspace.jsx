@@ -17,7 +17,7 @@ const Workspace = () => {
           </ErrorBoundary>
         </Suspense>}/>
       {/* Route for  Project Page  */}
-      <Route exact path='/workspace' element={
+      <Route exact path='/' element={
         <Suspense fallback={<LogoLoader/>}>
           <ErrorBoundary >
             <WorkspacePage/>

@@ -13,7 +13,7 @@ const Project = () => {
       <Routes>
         <Route
           exact
-          path="project/create"
+          path="/create"
           element={
             <Suspense fallback={<ThreeCirclesLoader />}>
               <ErrorBoundary>
@@ -25,7 +25,7 @@ const Project = () => {
         {/* Route for  New Project  */}
         <Route
           exact
-          path="/project"
+          path="/"
           element={
             <Suspense fallback={<ThreeCirclesLoader />}>
               <ErrorBoundary>
