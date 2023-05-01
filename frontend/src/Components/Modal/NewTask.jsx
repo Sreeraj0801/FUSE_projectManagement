@@ -121,7 +121,6 @@ const NewTask = ({ data }) => {
           prevState.images = urls;
         });
       }
-      console.log({ task });
       await addTask(task);
       await fetchTask();
       setLoader(false);

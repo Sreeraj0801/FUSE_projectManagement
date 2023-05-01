@@ -29,7 +29,6 @@ const TaskCmp = ({ projectId }) => {
           return task.status === "completed";
         })
       );
-      console.log(completedTask);
     } catch (error) {
       console.log(error);
     }
@@ -41,27 +40,31 @@ const TaskCmp = ({ projectId }) => {
   return (
     <div className=" dark:bg-slate-800 bg-gray-200  lg:p-8   p-3   ">
       <div className="flex justify-end">
-        {projectId ? (
-          <NewTask data={{ projectId,fetchTask }} />
-        ) : (
-          ""
-        )}
+        {projectId && <NewTask data={{ projectId, fetchTask }} />}
       </div>
       <>
         <div className="grid lg:grid-cols-3 gap-2  mb-36 lg:mb-0 ">
           <TaskMainCards
-            data={{ heading: `TASK (${ongoingTask.length})`, ongoingTask,fetchTask }}
+            data={{
+              heading: `TASK (${ongoingTask.length})`,
+              ongoingTask,
+              fetchTask,
+            }}
           />
 
           <TaskMainCards
             data={{
               heading: `COMPLETED (${completedTask.length})`,
               completedTask,
-              fetchTask
+              fetchTask,
             }}
           />
           <TaskMainCards
-            data={{ heading: `PENDING (${pendingTask.length})`, pendingTask,fetchTask }}
+            data={{
+              heading: `PENDING (${pendingTask.length})`,
+              pendingTask,
+              fetchTask,
+            }}
           />
         </div>
         <div></div>

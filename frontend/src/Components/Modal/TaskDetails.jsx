@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { userReducer } from "../../Redux/Slice/userSlice";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
 import { ToastContainer, toast } from "react-toastify";
-import CommentBox from "../TaskCmp/Cards/CommentBox";
-
+import CommentBox from "../Quil/CommentBox";
+import { GrCompliance } from "react-icons/gr";
+import { BsFillArrowDownCircleFill } from "react-icons/bs";
+import moment from "moment";
 import {
   BsCheckCircle,
   BsImages,
-  BsSendFill,
   BsPersonFill,
   BsFillCalendarDateFill,
 } from "react-icons/bs";
@@ -18,19 +18,28 @@ import { CgNotes } from "react-icons/cg";
 import { GoComment } from "react-icons/go";
 import { HiStatusOnline } from "react-icons/hi";
 import taskApi from "../../API/taskApi";
-import { setTaskStatus } from "../../Redux/Slice/taskSlice";
 import ModalLoader from "./ModalLoader";
+import Swal from "sweetalert2";
 
 const TaskDetails = ({ data }) => {
   const userDetails = useSelector(userReducer);
-  const dispatch = useDispatch();
-  const { changeStatus } = taskApi();
+  const { changeStatus, postComment, fetchAllComments,deleteTask } = taskApi();
   const [loader, setLoader] = useState(false);
-  const arr = [1, 2, 3, 4, 5, 6];
+  const [commentLoader, setCommentLoader] = useState(false);
+  const [comments, setComments] = useState([]);
+  const [showDetails, setShowDetails] = useState({
+    discription: true,
+    images: false,
+    comments: false,
+    assignee: false,
+  });
   const handleModalClose = () => {
     data.setShowModal(false);
   };
-  console.log(data);
+
+  const handleShowDetails = (name) => {
+    setShowDetails({ ...showDetails, [name]: !showDetails[name] });
+  };
   const handleChangeStatus = async (e) => {
     try {
       if (userDetails.userId && data.task.task._id && e.target.value) {
@@ -40,15 +49,67 @@ const TaskDetails = ({ data }) => {
           data.task.task._id,
           e.target.value
         );
-        await dispatch(setTaskStatus({ status: e.target.value }));
         setLoader(false);
         data.task.fetchTask();
-        // data.setShowModal(false);
       } else toast.error("something went wrong");
     } catch (error) {
       console.log(error);
     }
   };
+
+  const addComment = async (comment) => {
+    try {
+      if (userDetails.userId && data.task.task._id && comment) {
+        await postComment(
+          userDetails.userId,
+          userDetails.name,
+          data.task.task._id,
+          comment
+        );
+        await getAllComments();
+      } else if (!comment) {
+        toast.error("empty comment");
+      }
+    } catch (error) {
+      toast.error(error.msg);
+    }
+  };
+
+  const getAllComments = async () => {
+    try {
+      const response = await fetchAllComments(data.task.task._id);
+      setComments(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllComments();
+  }, []);
+
+  const handleDeleteTask = async ()=>{
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then(async(result) => {
+
+      if (result.isConfirmed) {
+        await deleteTask(data.task.task._id);
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+          )
+        data.task.fetchTask();
+      }
+    })
+  }
   return (
     <div
       id="staticModal"
@@ -56,7 +117,7 @@ const TaskDetails = ({ data }) => {
       tabIndex="-1"
       aria-hidden="true"
       style={{ backgroundColor: " rgba(1, 1, 34, 0.6)" }}
-      className={`fixed top-0 left-0 right-0 z-50  w-full h-full bg-opacity-50 backdrop-filter backdrop-blur-sm   items-center justify-center ${
+      className={`fixed h-full top-0 left-0 right-0 z-50  w-full bg-opacity-50 backdrop-filter backdrop-blur-sm   items-center justify-center ${
         data.showModal ? "flex " : "hidden"
       }`}
     >
@@ -117,11 +178,14 @@ const TaskDetails = ({ data }) => {
             </div>
             <button
               type="button"
-              className="float-right text-white bg-gradient-to-r from-green-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
+              className="w-fit float-right text-white bg-gradient-to-r from-green-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-cyan-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2"
               onClick={handleChangeStatus}
               value="completed"
             >
-              Mark Complete
+              <span className="block md:hidden text-xl">
+                <GrCompliance />
+              </span>
+              <span className="hidden md:block ">Mark Complete</span>
             </button>
           </div>
 
@@ -129,13 +193,25 @@ const TaskDetails = ({ data }) => {
             <div className=" block h-96 col-span-2 overflow-y-scroll dark:scrollbar-thumb-gray-600 scrollbar-thumb-gray-400  scrollbar-thin pt-8 md:p-8 md:gap-3">
               <section className="Details dark:text-slate-300 text-gray-600 grid gap-8 mb-20">
                 <div>
-                  <section className="flex gap-3 text-slate-500 dark:text-slate-400">
-                    <CgNotes className="text-2xl" />
-                    <h1 id="name" className="name text-xl  font-bold  ">
-                      Discription
-                    </h1>
+                  <section className="flex justify-between text-slate-500 dark:text-slate-400">
+                    <div className="flex gap-3">
+                      <CgNotes className="text-2xl" />
+                      <h1 id="name" className="name text-xl  font-bold  ">
+                        Discription
+                      </h1>
+                    </div>
+                    <BsFillArrowDownCircleFill
+                      className={`text-3xl ${
+                        showDetails.discription ? "rotate-180 " : ""
+                      }  duration-300`}
+                      onClick={() => handleShowDetails("discription")}
+                    />
                   </section>
-                  <p className="max-h-20 overflow-y-scroll dark:scrollbar-thumb-gray-600 scrollbar-thumb-gray-400 scrollbar-thin text-md flex ">
+                  <p
+                    className={`overflow-y-scroll dark:scrollbar-thumb-gray-600 scrollbar-thumb-gray-400 scrollbar-thin text-md flex ${
+                      showDetails.discription ? "max-h-20 " : "h-0 "
+                    } delay-100  duration-300`}
+                  >
                     {data.task.task.discription}{" "}
                   </p>
                 </div>
@@ -153,13 +229,25 @@ const TaskDetails = ({ data }) => {
                   </p>
                 </div>
                 <div className="md:hidden">
-                  <section className="flex md:gap-3 text-slate-500 dark:text-slate-400 ">
-                    <BsPersonFill className="text-2xl" />
-                    <h1 id="name" className="name text-xl   font-semibold  ">
-                      Assignee
-                    </h1>
+                  <section className="flex justify-between text-slate-500 dark:text-slate-400 ">
+                    <div className="flex gap-3">
+                      <BsPersonFill className="text-2xl" />
+                      <h1 id="name" className="name text-xl   font-semibold  ">
+                        Assignee
+                      </h1>
+                    </div>
+                    <BsFillArrowDownCircleFill
+                      className={`text-3xl ${
+                        showDetails.assignee ? "rotate-180 " : ""
+                      }  duration-300`}
+                      onClick={() => handleShowDetails("assignee")}
+                    />
                   </section>
-                  <div className="grid  gap-3 max-h-36 overflow-y-scroll ">
+                  <div
+                    className={`grid mt-5 gap-3  overflow-y-scroll ${
+                      showDetails.assignee ? "max-h-36" : "h-0 "
+                    } duration-300`}
+                  >
                     {!data.task.task?.assigneeDetails[0] ? (
                       <p>Unassigned</p>
                     ) : (
@@ -183,10 +271,9 @@ const TaskDetails = ({ data }) => {
                           </div>
                         );
                       })
-                      )}
+                    )}
                   </div>
                 </div>
-                      <CommentBox/>
                 <div className="block md:hidden">
                   <section className="flex md:gap-3 text-slate-500 dark:text-slate-400">
                     <HiStatusOnline className="md:text-3xl text-3xl mr-2 " />
@@ -232,11 +319,23 @@ const TaskDetails = ({ data }) => {
 
                 {data.task.task?.images ? (
                   <div className="grid gap-3">
-                    <div className="flex gap-3 text-slate-500 dark:text-slate-400 text-xl font-bold">
-                      <BsImages className="text-2xl" />
-                      <label htmlFor="Images">Images</label>
+                    <div className="flex justify-between text-slate-500 dark:text-slate-400 text-xl font-bold">
+                      <div className="flex gap-3 ">
+                        <BsImages className="text-2xl" />
+                        <label htmlFor="Images">Images</label>
+                      </div>
+                      <BsFillArrowDownCircleFill
+                        className={`text-3xl ${
+                          showDetails.images ? "rotate-180 " : ""
+                        }  duration-300`}
+                        onClick={() => handleShowDetails("images")}
+                      />
                     </div>
-                    <section className="flex gap-3  max-h-56 overflow-scroll scrollbar-thumb-gray-400 scrollbar-thin items-center">
+                    <section
+                      className={`flex gap-3  duration-300 overflow-scroll scrollbar-thumb-gray-400 scrollbar-thin items-center ${
+                        showDetails.images ? "max-h-56" : "h-0 "
+                      } `}
+                    >
                       {data.task.task.images.map((image) => {
                         return (
                           <img
@@ -254,70 +353,127 @@ const TaskDetails = ({ data }) => {
                 )}
 
                 <div>
-                  <div className="-mb-12 md:mb-0">
-                    <section className="flex gap-3 text-slate-500 dark:text-slate-400">
-                      <GoComment className="text-3xl" />
-                      <h1 id="name" className="name text-xl  font-bold  ">
-                        Comments
-                      </h1>
+                  <div className="-mb-12 md:mb-0 h-72 ">
+                    <section className="flex justify-between text-slate-500 dark:text-slate-400">
+                      <div className="flex gap-3">
+                        <GoComment className="text-3xl" />
+                        <h1 id="name" className="name text-xl  font-bold ">
+                          Comments
+                        </h1>
+                      </div>
+                      <BsFillArrowDownCircleFill
+                        className={`text-3xl ${
+                          showDetails.comments ? "rotate-180 " : ""
+                        }  duration-300`}
+                        onClick={() => handleShowDetails("comments")}
+                      />
                     </section>
-                    <div className="max-h-52 overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-400 md:p-5 grid gap-3 ">
-                      {arr.map((a) => {
+
+                    <div
+                      className={`${
+                        showDetails.comments
+                          ? "max-h-72   duration-300 "
+                          : "hidden    duration-300"
+                      } overflow-y-scroll border border-slate-600 rounded-lg scrollbar-thin scrollbar-thumb-gray-400 md:p-5 grid gap-3`}
+                    >
+                      {comments.map((comment) => {
+                        const isLink = comment.comment.startsWith("<a");
+                        const isCode = comment.comment.startsWith("<code>");
+
                         return (
                           <div
-                            key={a}
+                            key={comment._id}
                             className=" dark:border-slate-500 border-gray-400 grid gap-1 p-3"
                           >
-                            <section className="header flex gap-5">
-                              <div className="rounded-full bg-slate-900 w-8 h-8 flex justify-center items-center text-white">
-                                C
+                            <section className="header flex gap-5 ">
+                              <div className="rounded-full bg-slate-900 w-8 h-8 flex justify-center items-center text-white  ">
+                                {comment.reporterName[0] || "l"}
                               </div>
-                              <h1>lorem epsum</h1>
-                              <h1>1 sec ago</h1>
+                              <h1>{comment.reporterName}</h1>
+
+                              <h1>{moment(comment.time).fromNow()}</h1>
                             </section>
-                            <section className="text-left px-5 dark:text-slate-400">
-                              Lorem ipsum dolor sit amet consectetur adipisicing
+                            <section className="text-left px-5 ">
+                              <div className="comment">
+                                {
+                                  <p
+                                    dangerouslySetInnerHTML={{
+                                      __html: comment.comment,
+                                    }}
+                                  />
+                                }
+
+                                            <style>{`
+                                                pre {
+                                                  background-color: black;
+                                                  color: white;
+                                                  padding: 10px;
+                                                }
+                                                a {
+                                                  color: #5A67D8;
+                                                  text-decoration: underline;
+                                                  
+                                                }
+                                                code {
+                                                  background:black;
+                                                  color:white;
+                                                  padding:5px;
+                                                  border-radius:5px;
+                                                }
+                                              `}
+                                            </style>
+                              </div>{" "}
                             </section>
                             <hr />
                           </div>
                         );
                       })}
+                      <div className="block  h-fit sticky  z-10 -bottom-5 bg-gray-300 dark:bg-gray-700 pt-2">
+                        <div className="flex gap-5 ">
+                          <div className="md:flex justify-center items-center hidden">
+                            <div className="rounded-full bg-slate-900 w-8 h-8 p-5 md:flex justify-center items-center text-white">
+                              C
+                            </div>
+                          </div>
+                          <CommentBox
+                            props={{
+                              commentLoader,
+                              setCommentLoader,
+                              addComment,
+                            }}
+                          />
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </section>
-              <div className="block  h-20 bg-slate-700   border-slate-400 border-t-2 backdrop-blur-sm p-2 md:absolute bottom-0 sticky w-[100%]   md:w-[60%] z-10 ">
-                <div className="flex gap-5">
-                  <div className="rounded-full bg-slate-900 w-8 h-8 p-5 md:flex justify-center items-center text-white hidden ">
-                    C
-                  </div>
-                  <input
-                    type="text"
-                    id="helper-text"
-                    aria-describedby="helper-text-explanation"
-                    className="bg-gray-50 border p-3  border-gray-300 text-gray-900 text-sm  focus:ring-blue-500 focus:border-blue-500 block w-[32rem] dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Add comment ..."
-                  />
-                  <button className="bg-green-200 rounded-lg px-3 font-bold">
-                    <span className="hidden md:block">Submit</span>
-                    <BsSendFill className="md:hidden bloc" />
-                  </button>
-                </div>
-              </div>
             </div>
             <div className="  border-l-8 border-slate-600 md:grid hidden">
               <section className="items-start m-3 ">
                 <div>
-                  <section className="flex md:gap-3 text-slate-500 dark:text-slate-400 ">
-                    <BsPersonFill className="md:text-3xl text-lg" />
-                    <h1
-                      id="name"
-                      className="name md:text-xl text-sm  font-semibold  "
-                    >
-                      Assignee
-                    </h1>
+                  <section className="flex justify-between text-slate-500 dark:text-slate-400 ">
+                    <div className="flex md:gap-3 ">
+                      <BsPersonFill className="md:text-3xl text-lg" />
+                      <h1
+                        id="name"
+                        className="name md:text-xl text-sm  font-semibold  "
+                      >
+                        Assignee
+                      </h1>
+                    </div>
+                    <BsFillArrowDownCircleFill
+                      className={`text-3xl ${
+                        showDetails.assignee ? "rotate-180 " : ""
+                      }  duration-300`}
+                      onClick={() => handleShowDetails("assignee")}
+                    />
                   </section>
-                  <div className="grid mt-5 gap-3 max-h-36 overflow-y-scroll">
+                  <div
+                    className={`grid mt-5 gap-3  overflow-y-scroll ${
+                      showDetails.assignee ? "max-h-36  top-20 " : "h-0 "
+                    } duration-300`}
+                  >
                     {!data.task.task?.assigneeDetails[0] ? (
                       <p>Unassigned</p>
                     ) : (
@@ -411,6 +567,9 @@ const TaskDetails = ({ data }) => {
                       )}
                     </select>
                   </div>
+                </div>
+                <div className="flex justify-end mt-5 ">
+                  <button className="p-2 font-bold bg-red-600 rounded-xl" onClick={handleDeleteTask}>Delete </button>
                 </div>
               </section>
             </div>

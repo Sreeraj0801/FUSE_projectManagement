@@ -43,9 +43,6 @@ const taskSchema = new Schema({
   comments: {
     type: Array,
   },
-  completedFiles: {
-    type: Array,
-  },
 });
 
 //export const userTaskSchema:any = model("taskSchema",taskSchema,'tasks');

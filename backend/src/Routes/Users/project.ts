@@ -6,6 +6,7 @@ import {
   getAllProjectDetails,
   getProjectDetail,
   getAllregisterdProjectMembers,
+  
 } from "../../Controller/projectController";
 
 //-----------Project create ---------------------
@@ -18,5 +19,6 @@ router.get("/:workspaceId/:email/:userId", getAllProjectDetails);
 router.get("/details/:projectId", getProjectDetail);
 
 router.get("/members/:projectId", getAllregisterdProjectMembers);
+
 
 export default router;

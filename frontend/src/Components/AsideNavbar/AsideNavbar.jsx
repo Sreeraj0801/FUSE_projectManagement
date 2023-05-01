@@ -11,13 +11,13 @@ import MobileNav from "../MobileNav/MobileNav";
 const AsideNavbar = () => {
   const menus = [
     { name: "home", link: "/home", icon: AiOutlineHome },
-    { name: "dashboard", link: "/dashboard", icon: MdOutlineDashboard },
+    //{ name: "dashboard", link: "/dashboard", icon: MdOutlineDashboard },
     { name: "workspaces", link: "/workspace", icon: TbReportAnalytics},
-    { name: "messages", link: "/", icon: FiMessageSquare , margin: true },
-    { name: "File Manager", link: "/", icon: FiFolder },
-    { name: "Cart", link: "/", icon: FiShoppingCart },
-    { name: "User", link: "/profile", icon: AiOutlineUser, margin: true },
-    { name: "Setting", link: "/", icon: RiSettings4Line },
+    // { name: "messages", link: "/", icon: FiMessageSquare , margin: true },
+    // { name: "File Manager", link: "/", icon: FiFolder },
+    // { name: "Cart", link: "/", icon: FiShoppingCart },
+    // { name: "User", link: "/profile", icon: AiOutlineUser, margin: true },
+    // { name: "Setting", link: "/", icon: RiSettings4Line },
   ];
   const [open, setOpen] = useState(true);
   return (

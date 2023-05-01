@@ -66,5 +66,4 @@ export class ProjectClass {
       throw { error };
     }
   }
-  
 }

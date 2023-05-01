@@ -63,7 +63,7 @@ function Navbar() {
               New Project
             </ Link>
             <div className="">
-            <button
+            {/* <button
               data-collapse-toggle="navbar-sticky"
               type="button"
               className="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
@@ -85,10 +85,10 @@ function Navbar() {
                   clipRule="evenodd"
                 ></path>
               </svg>
-            </button>
+            </button> */}
             </div>
           </div>
-          <div
+          {/* <div
             className={ `items-center justify-between   md:flex md:w-auto md:order-1 z-10 lg:z-0 md:top-0 top-14 w-11/12 fixed md:static  ${handBurger.mainMenu ? 'block' :'hidden'}`} 
             id="navbar-sticky"
           >
@@ -118,7 +118,7 @@ function Navbar() {
                 </Link>
               </li>
             </ul>
-          </div>
+          </div> */}
         </div>
       </nav>
     </div>

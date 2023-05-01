@@ -5,7 +5,7 @@ export interface taskInterface {
   from: string;
   to: string;
   image?: [];
-  assignee?: [];
+  assignee?: any[];
   reporter: string;
   projectId: string;
   comments?: [];

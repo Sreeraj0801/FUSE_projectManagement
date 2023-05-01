@@ -13,8 +13,8 @@ const TaskMainCards = ({data}) => {
           {data?.heading}
         </h1>
         {data.ongoingTask && (
-          <div className="overflow-y-scroll scrollbar-thumb-gray-900  scrollbar-thin h-60 py-3">
-            <div className="max-h-96 grid gap-3 ">
+          <div className="overflow-y-scroll scrollbar-thumb-gray-900  scrollbar-thin  py-3">
+            <div className="max-h-96 grid  gap-3 ">
             {data.ongoingTask.map((task) => {
               return (
                 <button key={task._id}>

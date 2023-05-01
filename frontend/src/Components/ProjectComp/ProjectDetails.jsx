@@ -2,10 +2,24 @@
 /* eslint-disable no-unused-vars */
 import React from "react";
 import ProgressCircleChart from "../Chart/ProgressCircleChart";
-import AddMembersToProject from "../Modal/AddMembersToProject";
+import taskApi from "../../API/taskApi";
+import { useEffect,useState } from "react";
 
-const ProjectDetails = ({ details }) => {
-  console.log(details);
+const ProjectDetails = ({ details } ) => {
+  const [progress,setProgress]=useState(0);
+const {getProgression} =   taskApi();
+  const fetchProgession =async ()=>{
+    try {
+      const response = await getProgression(details._id);
+      setProgress(response)
+      console.log(response);
+    } catch (error) {
+      //
+    }
+  }
+  useEffect(() => {
+    fetchProgession();
+  }, []);
   return (
     <>
         {/* <div className="justify-end flex">
@@ -17,7 +31,7 @@ const ProjectDetails = ({ details }) => {
             PROJECT OVERVIEW
           </h1>
           <div className="flex justify-center items-center ">
-            <ProgressCircleChart percentage={20} />
+            <ProgressCircleChart percentage={progress} />
           </div>
         </div>
 

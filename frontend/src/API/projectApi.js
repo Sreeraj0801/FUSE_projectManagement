@@ -40,11 +40,12 @@ const projectApi = () => {
           throw {error}
         }
       }
+
   return {
     createProject,
     getAllProjectDetails,
     getProjectDetaiils,
-    getRegisterdProjectMembers
+    getRegisterdProjectMembers,
   }
 }
 

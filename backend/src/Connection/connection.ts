@@ -9,7 +9,7 @@ const dbOptions: MyConnectOptions = {
 
 
 export const connectToDatabase = () => {
-    mongoose.connect('mongodb://localhost:27017/FUSE', dbOptions).then(()=>{
+    mongoose.connect('mongodb+srv://sreeraj0801:fuseofficial@cluster0.8ewjrvu.mongodb.net/test', dbOptions).then(()=>{
       console.log('successfully connected to database');
     }).catch((err)=>{console.log("DataBase Error",err);
     })
