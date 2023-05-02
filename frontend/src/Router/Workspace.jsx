@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import ErrorBoundary from '../Components/ErrorBoundries/ErrorBoundries';
 import LogoLoader from "../Components/Loders/LogoLoader";
 import WorkspaceInvitationMain from '../Components/WorkspaceInvitation/WorkspaceInvitationMain';
+
 const WorkspacePage = lazy(()=>import(`../Pages/Users/WorkspacePage`))
 
 const Workspace = () => {
@@ -16,7 +17,7 @@ const Workspace = () => {
           </ErrorBoundary>
         </Suspense>}/>
       {/* Route for  Project Page  */}
-      <Route exact path='/workspace' element={
+      <Route exact path='/' element={
         <Suspense fallback={<LogoLoader/>}>
           <ErrorBoundary >
             <WorkspacePage/>

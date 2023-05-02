@@ -87,7 +87,7 @@ export const sentMail = async (details: any) => {
               <div>
                 <a
                   class="button accept"
-                  href="${process.env.BASE_URL}/verifyworkspaceinvitation/${details['worksapceId']}/${encryptedEmail}/accepted"
+                  href="${process.env.BASE_URL}/workspcace/verifyworkspaceinvitation/${details['worksapceId']}/${encryptedEmail}/accepted"
                   style="color: white;"
                   >Accept</a
                 >
@@ -95,7 +95,7 @@ export const sentMail = async (details: any) => {
                   class="button decline"
                   style="color: white;"
                   onclick="declineInvitation()"
-                  href = 'http://localhost:3000/workspace/verifyUserinvitationEmail/${details['worksapceId']}/${encryptedEmail}/declined'
+                  href = 'http://localhost:3000/verifyUserinvitationEmail/${details['worksapceId']}/${encryptedEmail}/declined'
                   >
                   Decline
                   </a>
