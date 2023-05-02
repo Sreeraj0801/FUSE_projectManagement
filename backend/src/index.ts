@@ -13,7 +13,7 @@ dotenv.config();
 //----------------------- middleware ------------------------------
 app.use(
   cors({
-    origin: "http://127.0.0.1:5173",
+    origin: ["*", "http://localhost:5173","http://fuse-official.online","https://fuse-official.online"],
     methods: ["PUT", "POST", "DELETE", "GET", "PATCH"],
     credentials: true,
   })
