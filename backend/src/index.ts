@@ -5,13 +5,15 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import { connectToDatabase } from "./Connection/connection";
 import * as dotenv from "dotenv";
-const app = express();
+const server = express();
+const app = express.Router()
+
 
 connectToDatabase();
 dotenv.config();
 
 //----------------------- middleware ------------------------------
-app.use(
+server.use(
   cors({
     origin: ["*", "http://localhost:5173","http://fuse-official.online","https://fuse-official.online"],
     methods: ["PUT", "POST", "DELETE", "GET", "PATCH"],
@@ -19,12 +21,12 @@ app.use(
   })
 );
 // app.use(cors());
-app.use(morgan("dev"));
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use(cookieParser());
-app.use(express.static("Public"));
-app.use(express.json());
+server.use(morgan("dev"));
+server.use(bodyParser.urlencoded({ extended: true }));
+server.use(bodyParser.json());
+server.use(cookieParser());
+server.use(express.static("Public"));
+server.use(express.json());
 
 /* ------------------------ Routes --------------------------------
    # importing Routes and Using It
@@ -41,7 +43,9 @@ app.use("/workspace",WorkspaceRouter);
 app.use("/project",ProjectRouter)
 app.use('/task',TaskRouter)
 
+server.use('/server',app)
+
 //--------------------- Port Running -----------------------------
-app.listen(process.env.PORT_NUMBER, () => {
+server.listen(process.env.PORT_NUMBER, () => {
   console.log(`server started at http://localhost:${process.env.PORT_NUMBER}`);
 });

@@ -33,22 +33,23 @@ const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const connection_1 = require("./Connection/connection");
 const dotenv = __importStar(require("dotenv"));
-const app = (0, express_1.default)();
+const server = (0, express_1.default)();
+const app = express_1.default.Router();
 (0, connection_1.connectToDatabase)();
 dotenv.config();
 //----------------------- middleware ------------------------------
-app.use((0, cors_1.default)({
+server.use((0, cors_1.default)({
     origin: ["*", "http://localhost:5173", "http://fuse-official.online", "https://fuse-official.online"],
     methods: ["PUT", "POST", "DELETE", "GET", "PATCH"],
     credentials: true,
 }));
 // app.use(cors());
-app.use((0, morgan_1.default)("dev"));
-app.use(body_parser_1.default.urlencoded({ extended: true }));
-app.use(body_parser_1.default.json());
-app.use((0, cookie_parser_1.default)());
-app.use(express_1.default.static("Public"));
-app.use(express_1.default.json());
+server.use((0, morgan_1.default)("dev"));
+server.use(body_parser_1.default.urlencoded({ extended: true }));
+server.use(body_parser_1.default.json());
+server.use((0, cookie_parser_1.default)());
+server.use(express_1.default.static("Public"));
+server.use(express_1.default.json());
 /* ------------------------ Routes --------------------------------
    # importing Routes and Using It
    ## Import Routes - User
@@ -62,7 +63,8 @@ app.use("/", auth_1.default);
 app.use("/workspace", workspace_1.default);
 app.use("/project", project_1.default);
 app.use('/task', task_1.default);
+server.use('/server', app);
 //--------------------- Port Running -----------------------------
-app.listen(process.env.PORT_NUMBER, () => {
+server.listen(process.env.PORT_NUMBER, () => {
     console.log(`server started at http://localhost:${process.env.PORT_NUMBER}`);
 });
