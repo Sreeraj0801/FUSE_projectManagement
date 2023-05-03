@@ -17,15 +17,17 @@ FUSE is a basic project management platform that allows users to create workspac
 
 3. Firebase is used for Google sign up and sign in, so you will need to configure your Firebase credentials. To do so, navigate to the "src/firebase" directory and update the "config.js" file with your Firebase project details. You can refer to the official Firebase documentation for more information: 
 
-`https://console.firebase.google.com/`
+       https://console.firebase.google.com/
 
 4. Once Firebase and npm modules are installed, start the project by running the following command:
-    `npm run dev`
+    
+       npm run dev
 
 This will launch the project using Vite.
 
 5. To set up the backend, navigate to the "backend" directory and run the following command to install all npm modules:
-    `npm install`
+    
+       npm install
 
 6. Nodemailer is used for sending email notifications to project members. To configure Nodemailer, navigate to the "src/Verification/Email" directory and update the configuration files in the three sub-directories as required.
 
@@ -36,7 +38,8 @@ This will launch the project using Vite.
 
 ## Deployment
 The site is hosted on AWS and can be accessed at the following URL:
-   ` https://fuse-official.online/`
+    
+    https://fuse-official.online/
 
 ---
 
