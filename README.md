@@ -9,7 +9,8 @@ FUSE is a basic project management platform that allows users to create workspac
 
 ## Installation
 1. Clone the project from GitHub using the following command
-    `git clone https://github.com/Sreeraj0801/FUSE_projectManagement.git `
+     
+       git clone https://github.com/Sreeraj0801/FUSE_projectManagement.git 
 
 2.To set up the frontend, navigate to the "frontend" directory and run the following command to install all npm modules
 
