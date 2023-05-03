@@ -1,1 +1,0 @@
-import{j as e,a}from"./index-c8182a80.js";function s(){return e("div",{children:a("div",{className:"flex items-center",children:[e("img",{className:"h-10  md:h-14 w-auto",src:"./Images/FuseMain.png",alt:"ProjectMangement"}),e("h1",{className:"font-mono md:text-4xl text-3xl  font-semibold text-gray-800 antialiased ",children:"FUSE"})]})})}export{s as L};
