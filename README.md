@@ -8,11 +8,12 @@ FUSE is a basic project management platform that allows users to create workspac
 ---
 
 ## Installation
-1. Clone the project from GitHub using the following command\
+1. Clone the project from GitHub using the following command
     `git clone https://github.com/Sreeraj0801/FUSE_projectManagement.git `
 
-2. To set up the frontend, navigate to the "frontend" directory and run the following command to install all npm modules:
+2.To set up the frontend, navigate to the "frontend" directory and run the following command to install all npm modules:
     npm install
+
 3. Firebase is used for Google sign up and sign in, so you will need to configure your Firebase credentials. To do so, navigate to the "src/firebase" directory and update the "config.js" file with your Firebase project details. You can refer to the official Firebase documentation for more information: 
 
 `https://console.firebase.google.com/`
