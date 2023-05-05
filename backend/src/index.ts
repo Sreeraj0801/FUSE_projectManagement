@@ -15,12 +15,12 @@ dotenv.config();
 //----------------------- middleware ------------------------------
 server.use(
   cors({
-    origin: ["*", "http://localhost:5173","http://fuse-official.online","https://fuse-official.online"],
+    origin: ["*", "http://localhost:5173","http://fuse-official.online","https://fuse-official.online","http://127.0.0.1:5173"],
     methods: ["PUT", "POST", "DELETE", "GET", "PATCH"],
     credentials: true,
   })
 );
-// app.use(cors());
+
 server.use(morgan("dev"));
 server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.json());
@@ -37,13 +37,13 @@ import WorkspaceRouter from './Routes/Users/workspace'
 import ProjectRouter from './Routes/Users/project';
 import TaskRouter from './Routes/Users/task'
 //Using the Routes
+server.use('/server',app)
 
 app.use("/", UserRouter);
 app.use("/workspace",WorkspaceRouter);
 app.use("/project",ProjectRouter)
 app.use('/task',TaskRouter)
 
-server.use('/server',app)
 
 //--------------------- Port Running -----------------------------
 server.listen(process.env.PORT_NUMBER, () => {

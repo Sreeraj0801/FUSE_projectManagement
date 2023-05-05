@@ -48,6 +48,8 @@ const ProjectCmp = () => {
     getAllworkspace(userDetails.userId, userDetails.email);
   }, [render]);
 
+
+
   const handleWrkspaceCategory = async (wrkCategory) => {
     try {
       setWrkSpaceCategery(wrkCategory);
@@ -58,28 +60,30 @@ const ProjectCmp = () => {
   const handleWorkspaceChange = async (workspaceId, category) => {
     try {
       setDropDown(false);
-      let wrkSelected
-      if(category === 'ownedWorkspaces'){
+      let wrkSelected;
+      if (category === "ownedWorkspaces") {
         wrkSelected = ownedWorkspaces.filter((wrk) => {
           if (wrk._id === workspaceId) {
             return wrk;
           }
         });
-      }
-      else if(category === 'sharedWorkspace')  {
+      } else if (category === "sharedWorkspace") {
         wrkSelected = sharedWorkspaces.filter((wrk) => {
           if (wrk._id === workspaceId) {
             return wrk;
           }
         });
-      }
-      else {
-        return 
+      } else {
+        return;
       }
       setIcon(category);
       setSelectedWorkspace(wrkSelected[0]);
       setApiLoader(true);
-      const response = await getAllProjectDetails(workspaceId,userDetails.email,userDetails.userId);
+      const response = await getAllProjectDetails(
+        workspaceId,
+        userDetails.email,
+        userDetails.userId
+      );
       setProjects(response);
       setApiLoader(false);
     } catch (error) {
@@ -104,17 +108,18 @@ const ProjectCmp = () => {
             {selectedWorkspace?.workspaceName
               ? selectedWorkspace.workspaceName
               : "Select Your Workspace"}
-              {
-                selectedWorkspace && selectedWorkspace?.masterDetails ? 
-                <div className=" inline-flex relative -left-1 items-center justify-center w-12 h-12 text-xs font-bold text-white bg-blue-500 border-white rounded-full -top-7 -right-2 dark:border-gray-900">Shared</div>
-                :
-                (selectedWorkspace?._id ? 
-                  <div className=" inline-flex relative -left-1 items-center justify-center w-12 h-12 text-xs font-bold text-white bg-green-500 border-white rounded-full -top-7 -right-2 dark:border-gray-900">Owned</div>
-                  :' '
-                )
-              }
+            {selectedWorkspace && selectedWorkspace?.masterDetails ? (
+              <div className=" inline-flex relative -left-1 items-center justify-center w-12 h-12 text-xs font-bold text-white bg-blue-500 border-white rounded-full -top-7 -right-2 dark:border-gray-900">
+                Shared
+              </div>
+            ) : selectedWorkspace?._id ? (
+              <div className=" inline-flex relative -left-1 items-center justify-center w-12 h-12 text-xs font-bold text-white bg-green-500 border-white rounded-full -top-7 -right-2 dark:border-gray-900">
+                Owned
+              </div>
+            ) : (
+              " "
+            )}
           </h1>
-
         </div>
         <input
           type="text"
@@ -171,24 +176,30 @@ const ProjectCmp = () => {
             wrkSpaceCategery === "sharedWorkspace" ? "block" : "hidden"
           } `}
         >
-       <ul>
-       {sharedWorkspaces.length ? sharedWorkspaces.map((sharedWorkspaces) => {
-            return (
-              <li
-                key={sharedWorkspaces._id}
-                className="dark:text-white cursor-pointer text-gray-600 font-bold p-2 text-xl dark:hover:bg-gray-700 hover:bg-gray-300 hover:transform hover:-translate-y-1 transition duration-300 hover:cursor-pointer"
-                onClick={() => {
-                  handleWorkspaceChange(sharedWorkspaces._id, wrkSpaceCategery);
-                }}
-              >
-                 {sharedWorkspaces.workspaceName}
+          <ul>
+            {sharedWorkspaces.length ? (
+              sharedWorkspaces.map((sharedWorkspaces) => {
+                return (
+                  <li
+                    key={sharedWorkspaces._id}
+                    className="dark:text-white cursor-pointer text-gray-600 font-bold p-2 text-xl dark:hover:bg-gray-700 hover:bg-gray-300 hover:transform hover:-translate-y-1 transition duration-300 hover:cursor-pointer"
+                    onClick={() => {
+                      handleWorkspaceChange(
+                        sharedWorkspaces._id,
+                        wrkSpaceCategery
+                      );
+                    }}
+                  >
+                    {sharedWorkspaces.workspaceName}
+                  </li>
+                );
+              })
+            ) : (
+              <li className="dark:text-white text-xl text-slate-700 mt-5">
+                No workspaces Shared
               </li>
-            );
-          })
-          :
-          <li className="dark:text-white text-xl text-slate-700 mt-5">No workspaces Shared</li>
-           }
-       </ul>
+            )}
+          </ul>
         </div>
         <div
           className={`overflow-auto w-full ${
@@ -196,21 +207,28 @@ const ProjectCmp = () => {
           } `}
         >
           <ul>
-          {ownedWorkspaces.length? ownedWorkspaces.map((ownedWorkspace) => {
-            return (
-              <li
-                key={ownedWorkspace._id}
-                className="dark:text-white cursor-pointer text-gray-600  font-bold p-2 text-xl dark:hover:bg-gray-700 hover:bg-gray-300 hover:transform hover:-translate-y-1 transition duration-300 "
-                onClick={() => {
-                  handleWorkspaceChange(ownedWorkspace._id, wrkSpaceCategery);
-                }}
-              >
-                {ownedWorkspace.workspaceName}
+            {ownedWorkspaces.length ? (
+              ownedWorkspaces.map((ownedWorkspace) => {
+                return (
+                  <li
+                    key={ownedWorkspace._id}
+                    className="dark:text-white cursor-pointer text-gray-600  font-bold p-2 text-xl dark:hover:bg-gray-700 hover:bg-gray-300 hover:transform hover:-translate-y-1 transition duration-300 "
+                    onClick={() => {
+                      handleWorkspaceChange(
+                        ownedWorkspace._id,
+                        wrkSpaceCategery
+                      );
+                    }}
+                  >
+                    {ownedWorkspace.workspaceName}
+                  </li>
+                );
+              })
+            ) : (
+              <li className="dark:text-white text-xl text-slate-700 mt-5">
+                No workspaces owned
               </li>
-            );
-          }) :
-          <li className="dark:text-white text-xl text-slate-700 mt-5">No workspaces owned</li>
-        }
+            )}
           </ul>
         </div>
       </div>
@@ -272,52 +290,60 @@ const ProjectCmp = () => {
               <h1 className=" text-xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-3xl dark:text-white sticky z-40 -top-7 p-2   backdrop-blur-md ">
                 LIST OF PROJECTS
               </h1>
+              <p className="text-black dark:text-white text-end animate-bounce"> *select a project for details</p>
               <div className="lg:mx-10 my-5  max-h-26 overflow-y-auto scrollbar-thumb-gray-500  scrollbar-thin ">
-                {projects?.length ? <ul className="max-w-full divide-y divide-gray-200 dark:divide-gray-700  ">
-                  {projects.map((project) => {
-                    return (
-                      <li
-                        key={project._id}
-                        className="pb-3 sm:pb-4 cursor-pointer hover:dark:bg-slate-700 p-2 hover:bg-gray-300 hover:transform hover:-translate-y-1 transition duration-300"
-                        onClick={() => {
-                          navigate("/project", {
-                            state: { projectId: project._id ,wrkSpaceCategery},
-                          });
-                        }}
-                      >
-                        <div className="flex items-center space-x-4 ">
-                          <div className="flex-shrink-0">
+                {projects?.length ? (
+                  <ul className="max-w-full divide-y divide-gray-200 dark:divide-gray-700  ">
+                    {projects.map((project) => {
+                      return (
+                        <li
+                          key={project._id}
+                          className="pb-3 sm:pb-4 cursor-pointer hover:dark:bg-slate-700 p-2 hover:bg-gray-300 hover:transform hover:-translate-y-1 transition duration-300"
+                          onClick={() => {
+                            navigate("/project", {
+                              state: {
+                                projectId: project._id,
+                                wrkSpaceCategery,
+                              },
+                            });
+                          }}
+                        >
+                          <div className="flex items-center space-x-4 ">
+                            <div className="flex-shrink-0">
+                              <div
+                                className="w-8 h-8 rounded-full text-center flex justify-center font-semibold text-2xl "
+                                style={{ background: project.projectTheme }}
+                              >
+                                {project.projectName[0].toUpperCase()}
+                              </div>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
+                                {project.projectName}
+                              </p>
+                              <p className="text-sm text-gray-500 truncate dark:text-gray-400">
+                                {project.projectDiscription}
+                              </p>
+                            </div>
                             <div
-                              className="w-8 h-8 rounded-full text-center flex justify-center font-semibold text-2xl "
-                              style={{ background: project.projectTheme }}
+                              className={`inline-flex items-center text-base font-semibold  ${
+                                !project.status
+                                  ? "text-green-600"
+                                  : "dark:text-white"
+                              }`}
                             >
-                              {project.projectName[0].toUpperCase()}
+                              {project.status ? "Ongoing" : "Completed"}
                             </div>
                           </div>
-                          <div className="flex-1 min-w-0">
-                            <p className="text-sm font-medium text-gray-900 truncate dark:text-white">
-                              {project.projectName}
-                            </p>
-                            <p className="text-sm text-gray-500 truncate dark:text-gray-400">
-                              {project.projectDiscription}
-                            </p>
-                          </div>
-                          <div
-                            className={`inline-flex items-center text-base font-semibold  ${
-                              !project.status
-                                ? "text-green-600"
-                                : "dark:text-white"
-                            }`}
-                          >
-                            {project.status ? "Ongoing" : "Completed"}
-                          </div>
-                        </div>
-                      </li>
-                    );
-                  })}
-                </ul>:
-                  <h1 className="dark:text-white text-slate-800 font-extrabold">NO PROJECTS ARE PRESENT IN WORKSPACE</h1>
-                }
+                        </li>
+                      );
+                    })}
+                  </ul>
+                ) : (
+                  <h1 className="dark:text-white text-slate-800 font-extrabold">
+                    NO PROJECTS ARE PRESENT IN WORKSPACE
+                  </h1>
+                )}
               </div>
             </div>
           </div>
@@ -326,8 +352,9 @@ const ProjectCmp = () => {
             <div className="md:grid md:grid-cols-2 md:gap-4">
               <div className=" p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 mt-5   lg:mb-0  max-h-72 overflow-y-auto ">
                 <h1 className="dark:text-slate-400 text-center m-2 font-extrabold -mt-2">
-                  {selectedWorkspace && selectedWorkspace?.masterDetails ?'OWNER DETAILS':'YOUR WORKSPACE' }
-                  
+                  {selectedWorkspace && selectedWorkspace?.masterDetails
+                    ? "OWNER DETAILS"
+                    : "YOUR WORKSPACE"}
                 </h1>
                 {selectedWorkspace && selectedWorkspace?.masterDetails ? (
                   <div className="">
@@ -341,15 +368,13 @@ const ProjectCmp = () => {
                     </h1>
                   </div>
                 ) : (
-
                   <div className="">
-                      
-                      <h1 className="text-bold text-lg text-slate-900 dark:text-white  ">
+                    <h1 className="text-bold text-lg text-slate-900 dark:text-white  ">
                       {userDetails.name}
-                      </h1>
-                    
+                    </h1>
+
                     <h1 className="text-semibold text-slate-900 dark:text-white mt-2 ">
-                    {userDetails.email}
+                      {userDetails.email}
                     </h1>
                   </div>
                 )}
@@ -365,16 +390,21 @@ const ProjectCmp = () => {
                   MEMBERS ON WORKSPACE
                 </h1>
               </div>
-              <div
-                className="flex justify-end m-2 text-2xl font-extrabold  cursor-pointer ">
-                <button className=" bg-slate-300 p-1 rounded-full cursor-pointer hover:bg-gray-100 hover:scale-110 hover:rotate-90"
-                onClick={()=>{getAllworkspace(userDetails.userId, userDetails.email);}}>
+              <div className="flex justify-end m-2 text-2xl font-extrabold  cursor-pointer ">
+                <button
+                  className=" bg-slate-300 p-1 rounded-full cursor-pointer hover:bg-gray-100 hover:scale-110 hover:rotate-90"
+                  onClick={() => {
+                    getAllworkspace(userDetails.userId, userDetails.email);
+                  }}
+                >
                   <RxUpdate className="" />
                 </button>
               </div>
               <div className="lg:mx-10 my-5 ">
                 {!selectedWorkspace?.members?.length ? (
-                  <h1 className="dark:text-white text-slate-800 font-extrabold">NO MEMBERS ARE PRESENT IN WORKSPACE</h1>
+                  <h1 className="dark:text-white text-slate-800 font-extrabold">
+                    NO MEMBERS ARE PRESENT IN WORKSPACE
+                  </h1>
                 ) : (
                   <div className="max-w-full divide-y divide-gray-200 dark:divide-gray-700  max-h-26 overflow-y-auto scrollbar-thumb-gray-500  scrollbar-thin">
                     {selectedWorkspace.members.map((member) => {
