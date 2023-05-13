@@ -16,7 +16,10 @@ import io from "socket.io-client";
 const ChatCmp = () => {
   //const [socket, setSocket] = useState(null);
   const ENDPOINT = import.meta.env.VITE_BASE_URL_SOCKET;
-  let socket = io.connect(ENDPOINT);
+  let socket ; 
+  if(!socket){
+    socket = io.connect(ENDPOINT);
+  }
 
   const userDetails = useSelector(userReducer);
   const { fetchMyWorkspaces } = workspaceApi();
@@ -67,7 +70,7 @@ const ChatCmp = () => {
     } catch (error) {
       //
     }
-  };
+  };///////////////////////////////////////////////////////
 
   // --------------------------------------------- @When Project is selected ---------------------
   const handleProjectSelection = async (projectId) => {
