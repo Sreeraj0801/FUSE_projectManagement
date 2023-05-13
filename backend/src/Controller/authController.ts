@@ -95,7 +95,7 @@ export const resendVerifyLInk = async (req: Request, res: Response) => {
 };
 
 export const googleSignIn = async (req: Request, res: Response) => {
-  try {
+  try {        
     const response = await googleLogin(req.body.email);
     const userId: any = response?._id.toString();
     const accessToken = await generateAccessToken(userId);

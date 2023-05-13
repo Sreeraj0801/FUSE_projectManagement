@@ -1,11 +1,12 @@
-import React from 'react'
-import LoginCmp from '../../Components/LoginCmp/LoginCmp'
+import React from "react";
+import LoginCmp from "../../Components/LoginCmp/LoginCmp";
+
 function LoginPage() {
   return (
     <div>
-      <LoginCmp/>
+      <LoginCmp />
     </div>
-  )
+  );
 }
 
-export default LoginPage
+export default LoginPage;

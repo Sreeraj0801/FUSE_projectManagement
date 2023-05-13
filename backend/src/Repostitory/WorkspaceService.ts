@@ -9,7 +9,7 @@ export class workspaceService {
       await userWorkspaceSchema.create({ workspaceName, masterId, color });
       return "Workspace created Succesfully";
     } catch (error: any) {
-      throw { message: "Database Error" };
+      throw { message: "Workspace nor created " };
     }
   }
 
@@ -21,7 +21,7 @@ export class workspaceService {
       return await userWorkspaceSchema.find({ masterId, workspaceName });
     } catch (error) {
       console.log(error);
-      throw { message: "Database Error" };
+      throw { message: "Workspace not found" };
     }
   }
 
@@ -30,7 +30,7 @@ export class workspaceService {
       const response = await userWorkspaceSchema.find({ masterId: userId });
        return response 
     } catch (error:any) {
-      throw { message: "Database Error" };
+      throw { message: "No all workspaces found" };
     }
   }
 

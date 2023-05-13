@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React from 'react';
-
+import SomethingWrongPage from '../../Pages/Users/SomethingWrongPage';
 class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
@@ -19,7 +19,7 @@ class ErrorBoundary extends React.Component {
 
   render() {
     if (this.state.hasError) {
-      return <h1>Something went wrong.</h1>;
+      return <SomethingWrongPage/>;
     }
 
     return this.props.children;

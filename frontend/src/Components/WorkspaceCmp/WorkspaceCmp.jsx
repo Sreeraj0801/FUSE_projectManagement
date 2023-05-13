@@ -48,8 +48,6 @@ const ProjectCmp = () => {
     getAllworkspace(userDetails.userId, userDetails.email);
   }, [render]);
 
-
-
   const handleWrkspaceCategory = async (wrkCategory) => {
     try {
       setWrkSpaceCategery(wrkCategory);
@@ -290,7 +288,10 @@ const ProjectCmp = () => {
               <h1 className=" text-xl font-extrabold leading-none tracking-tight text-gray-900 md:text-3xl lg:text-3xl dark:text-white sticky z-40 -top-7 p-2   backdrop-blur-md ">
                 LIST OF PROJECTS
               </h1>
-              <p className="text-black dark:text-white text-end animate-bounce"> *select a project for details</p>
+              <p className="text-black dark:text-white text-end animate-bounce">
+                {" "}
+                *select a project for details
+              </p>
               <div className="lg:mx-10 my-5  max-h-26 overflow-y-auto scrollbar-thumb-gray-500  scrollbar-thin ">
                 {projects?.length ? (
                   <ul className="max-w-full divide-y divide-gray-200 dark:divide-gray-700  ">

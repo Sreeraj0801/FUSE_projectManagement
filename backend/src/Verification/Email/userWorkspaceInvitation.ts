@@ -1,21 +1,9 @@
-import NodeMailer from "nodemailer";
-import { InviteMembers } from "../../Types/workspace.types";
+import { transporter } from "./transporterConfig";
 import cryptoEncryption from "../../Encryption/cryptoEncryption";
 
 const { encryptEmail } = cryptoEncryption();
 export const sentMail = async (details: any) => {    
   try {
-    const transporter = NodeMailer.createTransport({
-      host: process.env.HOST,
-      service: process.env.SERVICE,
-      port: Number(process.env.EMAIL_PORT),
-      secure: Boolean(process.env.SECURE),
-      auth: {
-        user: process.env.USER,
-        pass: process.env.PASS,
-      },
-    });
-
     for (let i = 0; i < details.length; i++) {
       const encryptedEmail = await encryptEmail(details[i].email);
       await transporter.sendMail({
@@ -27,7 +15,7 @@ export const sentMail = async (details: any) => {
         <html>
           <head>
             <meta charset="UTF-8" />
-            <title>Workspace Invitation</title>
+            <title>Workspace Invitation</title>co
             <style>
               body {
                 font-family: Arial, Helvetica, sans-serif;

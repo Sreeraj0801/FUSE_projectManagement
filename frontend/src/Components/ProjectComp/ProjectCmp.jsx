@@ -83,10 +83,10 @@ const ProjectCmp = () => {
               <ul className="font-medium flex flex-col p-4 md:p-3 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700 ">
                 <li>
                   <button
-                    className={`block w-full text-start py-2 pl-3 pr-4 text-white  rounded md:bg-transparent  md:p-0 dark:text-white ${
+                    className={`block w-full text-start py-2 pl-3 pr-4 text-white  rounded md:bg-transparent  md:p-0 dark:text-white text-black ${
                       nav === "overview"
                         ? "md:dark:text-blue-500 md:text-blue-700 bg-blue-700"
-                        : "md:text-slate-700"
+                        : "md:text-slate-700 dark:text-slate-100 text-blue-800 "
                     }`}
                     aria-current="page"
                     onClick={() => {
@@ -103,7 +103,7 @@ const ProjectCmp = () => {
                     className={`block w-full text-start py-2 pl-3 pr-4 text-white  rounded md:bg-transparent  md:p-0 dark:text-white ${
                       nav === "task"
                         ? "md:dark:text-blue-500 md:text-blue-700 bg-blue-700"
-                        : "md:text-slate-700"
+                        : "md:text-slate-700 dark:text-slate-100 text-blue-800"
                     }`}
                     aria-current="page"
                     onClick={() => {

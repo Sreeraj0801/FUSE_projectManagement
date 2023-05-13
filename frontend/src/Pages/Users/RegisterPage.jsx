@@ -1,11 +1,12 @@
-import React from 'react'
-import RegisterCmp from '../../Components/RegisterCmp/RegisterCmp'
+import React from "react";
+import RegisterCmp from "../../Components/RegisterCmp/RegisterCmp";
+
 function RegisterPage() {
   return (
     <div>
-      <RegisterCmp/>
+      <RegisterCmp />
     </div>
-  )
+  );
 }
 
-export default RegisterPage
+export default RegisterPage;

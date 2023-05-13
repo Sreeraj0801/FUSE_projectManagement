@@ -1,23 +1,11 @@
-import NodeMailer from 'nodemailer'
-
-export const sentMail = async(projectName:string,members:[]) =>{
-    try {
-        const transporter = NodeMailer.createTransport({
-            host    :  process.env.HOST,
-            service :  process.env.SERVICE,
-            port    :  Number(process.env.EMAIL_PORT),
-            secure  :  Boolean(process.env.SECURE),
-            auth    :{
-                        user: process.env.USER,
-                        pass: process.env.PASS
-                    }
-        })
-
-        await transporter.sendMail({
-            from:process.env.USER,
-            to : members,
-            subject:"FUSE service confirmation mail",
-            html:`
+import { transporter } from "./transporterConfig";
+export const sentMail = async (projectName: string, members: []) => {
+  try {
+    await transporter.sendMail({
+      from: process.env.USER,
+      to: members,
+      subject: "FUSE service confirmation mail",
+      html: `
             <!DOCTYPE html>
 <html>
   <head>
@@ -65,14 +53,12 @@ export const sentMail = async(projectName:string,members:[]) =>{
   </body>
 </html>
 
-            `
-        })
-        
-        return  "Email sent successfully" 
-        
-    } catch (error) {
-        console.log(error)
-        throw{error}
-    }
-}
+            `,
+    });
 
+    return "Email sent successfully";
+  } catch (error) {
+    console.log(error);
+    throw { error };
+  }
+};

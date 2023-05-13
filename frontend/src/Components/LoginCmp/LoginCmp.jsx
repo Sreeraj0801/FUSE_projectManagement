@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 import axiosInstance from "../../API/baseURL";
 import { BsGoogle } from "react-icons/bs";
 import { FaPhoneAlt } from "react-icons/fa";
@@ -9,13 +9,12 @@ import Logo from "../../assets/Logo";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setDetails } from "../../Redux/Slice/userSlice";
-import userAuth from '../../Firebase/userAuth';
+import userAuth from "../../Firebase/userAuth";
 import LoaderCmp from "../Loders/Spinner";
 
-
 function LoginCmp() {
-  const [loader ,setLoader] = useState(false);
-  const {googleSignIn} = userAuth();
+  const [loader, setLoader] = useState(false);
+  const { googleSignIn } = userAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { handleInputChange, checkSubmit, details, errors, isValid } =
@@ -27,15 +26,21 @@ function LoginCmp() {
     checkSubmit(e);
     if (!isValid) toast.warning("Please check the credential");
     if (isValid) {
-      setLoader(true)
+      setLoader(true);
       await axiosInstance
         .post("/login", details)
         .then((response) => {
           if (response.data && response.status === 200) {
-            const { email, name, _id } =
-              response.data.response;
-            dispatch(setDetails({ name, email,userId:_id,accessToken:response.data.accessToken}));
-            setLoader(false)
+            const { email, name, _id } = response.data.response;
+            dispatch(
+              setDetails({
+                name,
+                email,
+                userId: _id,
+                accessToken: response.data.accessToken,
+              })
+            );
+            setLoader(false);
             navigate("/home");
           }
         })
@@ -61,11 +66,11 @@ function LoginCmp() {
 
   const handleGoogleSignIn = () => {
     try {
-      googleSignIn()
+      googleSignIn();
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div className="lg:grid grid-cols-2  h-screen lg:mx-32  lg:my-0">
@@ -87,20 +92,23 @@ function LoginCmp() {
           <span className="text-orange-600">Log in to FUSE</span> and explore
           our latest features
         </h1>
-        <div className="text-center md:flex lg:ml-10  justify-center lg:mt-14">
+        <div className="text-center md:flex lg:ml-10  justify-center lg:mt-14 items-center ">
           <button
             type="button"
-            className="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2"
+            className="w-[80%] text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2"
             onClick={handleGoogleSignIn}
           >
             <BsGoogle /> &nbsp; Sign in with Google
           </button>
           <button
             type="button"
-            className="text-white  focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium  text-sm  py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2  bg-orange-300 rounded px-5 pt-2 lg:h-10  hover:bg-orange-600 h-10 w-11/12 md:w-48"
-            onClick={()=>{navigate('/otpLogin')}}
+            className="w-[80%] text-white bg-orange-500 hover:bg-orange-600 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 mr-2 mb-2"
+            onClick={() => {
+              navigate("/otpLogin");
+            }}
           >
-            <FaPhoneAlt />&nbsp; Sign in using OTP
+            <FaPhoneAlt />
+            &nbsp; Sign in using OTP
           </button>
         </div>
         <div className="flex">
@@ -140,7 +148,7 @@ function LoginCmp() {
           <div className="text-center mt-4 -mb-5">
             <button className="relative inline-flex items-center justify-center p-0.5 mb-2 mr-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-teal-300 to-lime-500 group-hover:from-teal-300 group-hover:to-lime-300 focus:ring-4 focus:outline-none focus:ring-lime-200">
               <span className=" flex relative px-5 py-2.5 transition-all ease-in duration-75 bg-white  rounded-md group-hover:bg-opacity-0 text-sm text-bold w-32">
-                {loader?<LoaderCmp />:""}               
+                {loader ? <LoaderCmp /> : ""}
                 LOGIN
               </span>
             </button>
