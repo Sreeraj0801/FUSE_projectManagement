@@ -3,6 +3,7 @@ import { Server } from "socket.io";
 const socketConfig = (httpServer: any) => {
   let value:any ;
   const io = new Server(httpServer, {
+    path:'/server',
     pingTimeout: 60000,
     cors: {
       origin: [
