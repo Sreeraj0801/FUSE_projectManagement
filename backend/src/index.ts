@@ -41,12 +41,16 @@ app.use(express.json());
 /* ------------------------ Routes --------------------------------
    # importing Routes and Using It
    ## Import Routes - User
- */
-import UserRouter from "./Routes/Users/auth";
+   */
+  import UserRouter from "./Routes/Users/auth";
 import WorkspaceRouter from "./Routes/Users/workspace";
 import ProjectRouter from "./Routes/Users/project";
 import TaskRouter from "./Routes/Users/task";
 import ChatRouter from "./Routes/Users/chat";
+
+//-----------------------configaration file for socket.IO
+socketConfig(httpServer);
+
 //Using the Routes
 app.use("/server", Router);
 
@@ -63,5 +67,3 @@ httpServer.listen(PORT, () => {
 });
 
 
-//-----------------------configaration file for socket.IO
-socketConfig(httpServer);
